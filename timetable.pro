@@ -11,8 +11,11 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    authorization.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    authorization.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    authorization.ui
