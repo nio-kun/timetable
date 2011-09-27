@@ -23,12 +23,9 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLabel" name="label_2">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
+      <widget class="QLabel" name="label">
+       <property name="enabled">
+        <bool>true</bool>
        </property>
        <property name="minimumSize">
         <size>
@@ -37,7 +34,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Пароль</string>
+        <string>Логин</string>
        </property>
       </widget>
      </item>
@@ -59,9 +56,12 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QLabel" name="label">
-       <property name="enabled">
-        <bool>true</bool>
+      <widget class="QLabel" name="label_2">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
        <property name="minimumSize">
         <size>
@@ -70,7 +70,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Логин</string>
+        <string>Пароль</string>
        </property>
       </widget>
      </item>
