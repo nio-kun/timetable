@@ -5,11 +5,11 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    //MainWindow w;
-    authorization au;
+    MainWindow w;
+    //authorization au;
 
-    au.show();
-    //w.show();
+    //au.show();
+    w.show();
 
     return a.exec();
 }

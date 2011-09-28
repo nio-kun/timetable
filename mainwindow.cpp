@@ -4,6 +4,7 @@
 #include "users.h"
 #include "services.h"
 #include "ui_mainwindow.h"
+#include "authorization.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -38,6 +39,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->ttable->insertRow(10);
     ui->ttable->insertRow(11);
     ui->ttable->setVerticalHeaderLabels(lbls);
+
+    db = QSqlDatabase::addDatabase("QMYSQL");
+    db.setDatabaseName("timetable");
+    db.setHostName("localhost");
+    db.setPort(3307);
+
+    authorization a(&db);
+    a.exec();
+
 }
 
 MainWindow::~MainWindow()

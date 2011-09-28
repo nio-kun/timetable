@@ -6,6 +6,7 @@
 #include <QSqlDatabase>
 #include "QMessageBox"
 #include <QSqlError>
+#include <QSqlQuery>
 #include "mainwindow.h"
 
 namespace Ui {
@@ -23,15 +24,14 @@ public:
     ~authorization();
 
 private slots:
-    void on_buttonBox_clicked(QAbstractButton* button);
-
-    void on_buttonBox_accepted();
 
     void on_pushButton_2_clicked();
 
+    void on_pushButton_clicked();
+    void closeEvent(QCloseEvent *event);
 private:
     Ui::authorization *ui;
-    QSqlDatabase db;
+    QSqlDatabase *db;
 };
 
 #endif // AUTHORIZATION_H
