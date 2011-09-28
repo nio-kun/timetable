@@ -7,8 +7,6 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
     authorization au;
-    au.show();
-    //w.show();
-
+au.show();
     return a.exec();
 }

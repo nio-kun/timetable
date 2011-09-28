@@ -25,5 +25,6 @@ FORMS    += mainwindow.ui \
     users.ui \
     authorization.ui \
     settings.ui \
-    order_details.ui
-
+    order_details.ui \
+    places.ui \
+    services.ui
