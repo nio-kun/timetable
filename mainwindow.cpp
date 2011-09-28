@@ -42,8 +42,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     db = QSqlDatabase::addDatabase("QMYSQL");
     db.setDatabaseName("timetable");
-    db.setHostName("localhost");
-    db.setPort(3307);
 
     authorization a(&db);
     a.exec();
@@ -62,7 +60,7 @@ void MainWindow::on_action_2_triggered()
 
 void MainWindow::on_action_triggered()
 {
- settings s;
+ settings s(&db);
  s.exec();
 }
 

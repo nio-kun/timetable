@@ -1,39 +1,44 @@
 #include "settings.h"
 #include "ui_settings.h"
-#include <QFile>
-#include <QTextStream>
 
 settings::settings(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::settings)
 {
     ui->setupUi(this);
+}
 
+settings::settings(QSqlDatabase *kept_db, bool hide_dinner, QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::settings)
+{
+    ui->setupUi(this);
+    db=kept_db;
+    ui->lineEdit->setText(db->hostName());
+    ui->lineEdit_2->setText(QString::number(db->port()));
 
-    QFile file(qApp->applicationDirPath()+"/properties.ini");
-    if (file.open(QIODevice::ReadOnly)) {
-        QTextStream stream(&file);
-        QString temp_text;
-        int pos;
-        QString param;
-        while ( !stream.atEnd() ) {
-            temp_text=stream.readLine();
-            pos = temp_text.indexOf("=");
-            if (pos>-1){
-                param=temp_text.left(pos).trimmed();
-
-                if (param=="database_host"){
-                    ui->lineEdit->setText(temp_text.mid(pos+1).trimmed());
-                } else if (param=="database_port") {
-                    ui->lineEdit_2->setText(temp_text.mid(pos+1).trimmed());
-                }
-            }
+    if (db->isOpen()){
+        QSqlQuery query;
+        query.exec("select value from settings where name='dinner_start_time'");
+        if (query.numRowsAffected()>0){
+            query.next();
+            ui->lineEdit_3->setText(query.value(0).toString());
         }
-        file.close();
+
+        query.exec("select value from settings where name='dinner_end_time'");
+        if (query.numRowsAffected()>0){
+            query.next();
+            ui->lineEdit_4->setText(query.value(0).toString());
+        }
     }
 
-
-
+    if (hide_dinner){
+        ui->label_3->hide();
+        ui->label_4->hide();
+        ui->label_5->hide();
+        ui->lineEdit_3->hide();
+        ui->lineEdit_4->hide();
+    }
 }
 
 settings::~settings()
@@ -49,13 +54,55 @@ void settings::on_pushButton_clicked()
         stream << "database_host = "+ui->lineEdit->text()+"\n";
         stream << "database_port = "+ui->lineEdit_2->text()+"\n";
         file.close();
-        close();
     }else{
         QMessageBox::information(0, "Ошибка записи файла","Невозможно записать файл с настройками.", 0,0,0);
+        return;
     }
+
+
+    if (ui->lineEdit_3->text().toInt() > ui->lineEdit_4->text().toInt()){
+        QMessageBox::information(0, "Ошибка","Время начала обеда не может быть больше времени окончания", 0,0,0);
+        ui->lineEdit_3->setFocus();
+        return;
+    }
+    if (db->isOpen()){
+        QSqlQuery query;
+        query.exec("delete from settings where name='dinner_start_time'");
+
+        query.prepare ("insert into settings (name, type, value) values ('dinner_start_time','integer',:data)");
+        query.bindValue(":data", ui->lineEdit_3->text());
+        query.exec();
+
+        query.exec("delete from settings where name='dinner_end_time'");
+
+        query.prepare ("insert into settings (name, type, value) values ('dinner_end_time','integer',:data)");
+        query.bindValue(":data", ui->lineEdit_4->text());
+        query.exec();
+    }
+    close();
 }
 
 void settings::on_pushButton_2_clicked()
 {
     close();
+}
+
+void settings::on_lineEdit_3_lostFocus()
+{
+    check_dinner_time(ui->lineEdit_3);
+}
+
+void settings::check_dinner_time(QLineEdit *lineEdit){
+    bool ok;
+    int val;
+    val=lineEdit->text().toInt(&ok);
+    if (!ok || val < 0 || val > 24){
+        QMessageBox::information(0, "Ошибка","Время обеда должно быть числом от 0 до 24", 0,0,0);
+        lineEdit->setFocus();
+    }
+}
+
+void settings::on_lineEdit_4_lostFocus()
+{
+    check_dinner_time(ui->lineEdit_4);
 }

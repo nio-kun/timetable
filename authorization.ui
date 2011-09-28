@@ -85,6 +85,9 @@
        <property name="text">
         <string/>
        </property>
+       <property name="echoMode">
+        <enum>QLineEdit::Password</enum>
+       </property>
       </widget>
      </item>
     </layout>
@@ -105,6 +108,13 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
+      <widget class="QPushButton" name="pushButton_3">
+       <property name="text">
+        <string>Настройки</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -121,6 +131,9 @@
       <widget class="QPushButton" name="pushButton_2">
        <property name="text">
         <string>OK</string>
+       </property>
+       <property name="default">
+        <bool>true</bool>
        </property>
       </widget>
      </item>

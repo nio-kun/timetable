@@ -1,5 +1,7 @@
 #include "authorization.h"
 #include "ui_authorization.h"
+#include "mainwindow.h"
+#include "settings.h"
 
 authorization::authorization(QWidget *parent) :
     QDialog(parent),
@@ -20,9 +22,7 @@ authorization::authorization(QSqlDatabase *kept_db, QWidget *parent) :
 {
     ui->setupUi(this);
     db=kept_db;
-
-
-
+    read_properties();
 }
 
 authorization::~authorization()
@@ -32,7 +32,8 @@ authorization::~authorization()
 
 void authorization::on_pushButton_2_clicked()
 {
-    //QMessageBox::information(0, "Kanji",db->hostName(), 0,0,0);
+    read_properties();
+
     db->setUserName(ui->lineEdit->text());
     db->setPassword(ui->lineEdit_2->text());
     if( db->open() ){
@@ -68,4 +69,46 @@ void authorization::on_pushButton_clicked()
 void authorization::closeEvent(QCloseEvent *event)
 {
     exit(0);
+}
+
+void authorization::on_pushButton_3_clicked()
+{
+    settings s(db, true);
+    s.exec();
+}
+
+void authorization::on_authorization_rejected()
+{
+    QMessageBox::information(0, "Ошибка авторизации","Ляля", 0,0,0);
+}
+
+void authorization::reject()
+{
+    //Не удалять! Эта функция запрещает закрывать форму авторизации при нажатии на кнопку Escape
+}
+
+void  authorization::read_properties()
+{
+    //QMessageBox::information(0, "Kanji",db->hostName(), 0,0,0);
+    QFile file(qApp->applicationDirPath()+"/properties.ini");
+    if (file.open(QIODevice::ReadOnly)) {
+        QTextStream stream(&file);
+        QString temp_text;
+        int pos;
+        QString param;
+        while ( !stream.atEnd() ) {
+            temp_text=stream.readLine();
+            pos = temp_text.indexOf("=");
+            if (pos>-1){
+                param=temp_text.left(pos).trimmed();
+
+                if (param=="database_host"){
+                    db->setHostName(temp_text.mid(pos+1).trimmed());
+                } else if (param=="database_port") {
+                    db->setPort(temp_text.mid(pos+1).trimmed().toInt());
+                }
+            }
+        }
+        file.close();
+    }
 }

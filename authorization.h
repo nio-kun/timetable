@@ -7,7 +7,9 @@
 #include <QMessageBox>
 #include <QSqlError>
 #include <QSqlQuery>
-#include "mainwindow.h"
+#include <Qfile>
+#include <QTextStream>
+
 
 namespace Ui {
     class authorization;
@@ -30,9 +32,15 @@ private slots:
     void on_pushButton_clicked();
     void closeEvent(QCloseEvent *event);
 
+    void on_pushButton_3_clicked();
+
+    void on_authorization_rejected();
+    void reject();
+
 private:
     Ui::authorization *ui;
     QSqlDatabase *db;
+    void  read_properties();
 };
 
 #endif // AUTHORIZATION_H
