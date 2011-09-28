@@ -1,15 +1,15 @@
 /****************************************************************************
-** Meta object code from reading C++ file 'settings.h'
+** Meta object code from reading C++ file 'services.h'
 **
-** Created: Wed Sep 28 14:52:38 2011
+** Created: Wed Sep 28 14:58:50 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.2)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "settings.h"
+#include "services.h"
 #if !defined(Q_MOC_OUTPUT_REVISION)
-#error "The header file 'settings.h' doesn't include <QObject>."
+#error "The header file 'services.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 62
 #error "This file was generated using the moc from 4.7.2. It"
 #error "cannot be used with the include files from this version of Qt."
@@ -17,7 +17,7 @@
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-static const uint qt_meta_data_settings[] = {
+static const uint qt_meta_data_services[] = {
 
  // content:
        5,       // revision
@@ -33,33 +33,33 @@ static const uint qt_meta_data_settings[] = {
        0        // eod
 };
 
-static const char qt_meta_stringdata_settings[] = {
-    "settings\0"
+static const char qt_meta_stringdata_services[] = {
+    "services\0"
 };
 
-const QMetaObject settings::staticMetaObject = {
-    { &QDialog::staticMetaObject, qt_meta_stringdata_settings,
-      qt_meta_data_settings, 0 }
+const QMetaObject services::staticMetaObject = {
+    { &QDialog::staticMetaObject, qt_meta_stringdata_services,
+      qt_meta_data_services, 0 }
 };
 
 #ifdef Q_NO_DATA_RELOCATION
-const QMetaObject &settings::getStaticMetaObject() { return staticMetaObject; }
+const QMetaObject &services::getStaticMetaObject() { return staticMetaObject; }
 #endif //Q_NO_DATA_RELOCATION
 
-const QMetaObject *settings::metaObject() const
+const QMetaObject *services::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
 }
 
-void *settings::qt_metacast(const char *_clname)
+void *services::qt_metacast(const char *_clname)
 {
     if (!_clname) return 0;
-    if (!strcmp(_clname, qt_meta_stringdata_settings))
-        return static_cast<void*>(const_cast< settings*>(this));
+    if (!strcmp(_clname, qt_meta_stringdata_services))
+        return static_cast<void*>(const_cast< services*>(this));
     return QDialog::qt_metacast(_clname);
 }
 
-int settings::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int services::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QDialog::qt_metacall(_c, _id, _a);
     if (_id < 0)

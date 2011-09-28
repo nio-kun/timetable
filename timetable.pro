@@ -14,17 +14,23 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     authorization.cpp \
     settings.cpp \
-    order_details.cpp
+    order_details.cpp \
+    places.cpp \
+    services.cpp \
+    users.cpp
 
 HEADERS  += mainwindow.h \
     authorization.h \
     settings.h \
-    order_details.h
+    order_details.h \
+    places.h \
+    services.h \
+    users.h
 
 FORMS    += mainwindow.ui \
-    users.ui \
     authorization.ui \
     settings.ui \
     order_details.ui \
     places.ui \
-    services.ui
+    services.ui \
+    users.ui
