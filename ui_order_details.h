@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'order_details.ui'
 **
-** Created: Tue Sep 27 22:25:01 2011
+** Created: Wed Sep 28 15:53:16 2011
 **      by: Qt User Interface Compiler version 4.7.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -48,7 +48,7 @@ public:
     {
         if (order_details->objectName().isEmpty())
             order_details->setObjectName(QString::fromUtf8("order_details"));
-        order_details->resize(477, 273);
+        order_details->resize(477, 291);
         gridLayout = new QGridLayout(order_details);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         label = new QLabel(order_details);
@@ -133,7 +133,7 @@ public:
 
     void retranslateUi(QDialog *order_details)
     {
-        order_details->setWindowTitle(QApplication::translate("order_details", "\320\237\320\260\321\200\320\260\320\274\320\265\321\202\321\200\321\213 \320\276\320\261\321\201\320\273\321\203\320\266\320\270\320\262\320\260\320\275\320\270\321\217", 0, QApplication::UnicodeUTF8));
+        order_details->setWindowTitle(QApplication::translate("order_details", "\320\237\320\276\321\201\321\202\320\260\320\275\320\276\320\262\320\272\320\260 \320\275\320\260 \320\276\320\261\321\201\320\273\321\203\320\266\320\270\320\262\320\260\320\275\320\270\320\265", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("order_details", "\320\234\320\260\321\200\320\272\320\260 \320\260\320\262\321\202\320\276\320\274\320\276\320\261\320\270\320\273\321\217", 0, QApplication::UnicodeUTF8));
         lineEdit->setText(QString());
         label_2->setText(QApplication::translate("order_details", "\320\244\320\230\320\236 \320\272\320\273\320\270\320\265\320\275\321\202\320\260", 0, QApplication::UnicodeUTF8));

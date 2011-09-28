@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'places.ui'
 **
-** Created: Wed Sep 28 14:58:47 2011
+** Created: Wed Sep 28 15:53:16 2011
 **      by: Qt User Interface Compiler version 4.7.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -17,6 +17,7 @@
 #include <QtGui/QCheckBox>
 #include <QtGui/QDialog>
 #include <QtGui/QDialogButtonBox>
+#include <QtGui/QGridLayout>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
@@ -25,14 +26,14 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QSpacerItem>
 #include <QtGui/QVBoxLayout>
-#include <QtGui/QWidget>
 
 QT_BEGIN_NAMESPACE
 
 class Ui_places
 {
 public:
-    QWidget *layoutWidget;
+    QGridLayout *gridLayout;
+    QListView *listView;
     QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout_4;
     QLabel *label_3;
@@ -50,22 +51,24 @@ public:
     QPushButton *pushButton;
     QSpacerItem *horizontalSpacer_2;
     QDialogButtonBox *buttonBox;
-    QListView *listView;
 
     void setupUi(QDialog *places)
     {
         if (places->objectName().isEmpty())
             places->setObjectName(QString::fromUtf8("places"));
         places->resize(537, 244);
-        layoutWidget = new QWidget(places);
-        layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-        layoutWidget->setGeometry(QRect(244, 1, 291, 241));
-        verticalLayout = new QVBoxLayout(layoutWidget);
+        gridLayout = new QGridLayout(places);
+        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        listView = new QListView(places);
+        listView->setObjectName(QString::fromUtf8("listView"));
+
+        gridLayout->addWidget(listView, 0, 0, 1, 1);
+
+        verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-        verticalLayout->setContentsMargins(0, 0, 0, 0);
         horizontalLayout_4 = new QHBoxLayout();
         horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
-        label_3 = new QLabel(layoutWidget);
+        label_3 = new QLabel(places);
         label_3->setObjectName(QString::fromUtf8("label_3"));
 
         horizontalLayout_4->addWidget(label_3);
@@ -74,7 +77,7 @@ public:
 
         horizontalLayout_4->addItem(horizontalSpacer_3);
 
-        lineEdit_3 = new QLineEdit(layoutWidget);
+        lineEdit_3 = new QLineEdit(places);
         lineEdit_3->setObjectName(QString::fromUtf8("lineEdit_3"));
 
         horizontalLayout_4->addWidget(lineEdit_3);
@@ -84,7 +87,7 @@ public:
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        label = new QLabel(layoutWidget);
+        label = new QLabel(places);
         label->setObjectName(QString::fromUtf8("label"));
 
         horizontalLayout->addWidget(label);
@@ -93,12 +96,12 @@ public:
 
         horizontalLayout->addItem(horizontalSpacer_4);
 
-        label_2 = new QLabel(layoutWidget);
+        label_2 = new QLabel(places);
         label_2->setObjectName(QString::fromUtf8("label_2"));
 
         horizontalLayout->addWidget(label_2);
 
-        pushButton_2 = new QPushButton(layoutWidget);
+        pushButton_2 = new QPushButton(places);
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
         QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
         sizePolicy.setHorizontalStretch(0);
@@ -114,7 +117,7 @@ public:
 
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
-        checkBox = new QCheckBox(layoutWidget);
+        checkBox = new QCheckBox(places);
         checkBox->setObjectName(QString::fromUtf8("checkBox"));
 
         horizontalLayout_2->addWidget(checkBox);
@@ -128,7 +131,7 @@ public:
 
         horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
-        pushButton = new QPushButton(layoutWidget);
+        pushButton = new QPushButton(places);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
 
         horizontalLayout_3->addWidget(pushButton);
@@ -137,7 +140,7 @@ public:
 
         horizontalLayout_3->addItem(horizontalSpacer_2);
 
-        buttonBox = new QDialogButtonBox(layoutWidget);
+        buttonBox = new QDialogButtonBox(places);
         buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
@@ -147,9 +150,9 @@ public:
 
         verticalLayout->addLayout(horizontalLayout_3);
 
-        listView = new QListView(places);
-        listView->setObjectName(QString::fromUtf8("listView"));
-        listView->setGeometry(QRect(0, 0, 238, 237));
+
+        gridLayout->addLayout(verticalLayout, 0, 1, 1, 1);
+
 
         retranslateUi(places);
 
@@ -158,7 +161,7 @@ public:
 
     void retranslateUi(QDialog *places)
     {
-        places->setWindowTitle(QApplication::translate("places", "Dialog", 0, QApplication::UnicodeUTF8));
+        places->setWindowTitle(QApplication::translate("places", "\320\237\320\273\320\276\321\211\320\260\320\264\320\272\320\270", 0, QApplication::UnicodeUTF8));
         label_3->setText(QApplication::translate("places", "\320\235\320\260\320\270\320\274\320\265\320\275\320\276\320\262\320\260\320\275\320\270\320\265", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("places", "\320\246\320\262\320\265\321\202", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("places", "TextLabel", 0, QApplication::UnicodeUTF8));

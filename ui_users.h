@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'users.ui'
 **
-** Created: Wed Sep 28 14:58:47 2011
+** Created: Wed Sep 28 15:53:16 2011
 **      by: Qt User Interface Compiler version 4.7.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -16,6 +16,7 @@
 #include <QtGui/QButtonGroup>
 #include <QtGui/QDialog>
 #include <QtGui/QDialogButtonBox>
+#include <QtGui/QGridLayout>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
@@ -24,15 +25,14 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QSpacerItem>
 #include <QtGui/QVBoxLayout>
-#include <QtGui/QWidget>
 
 QT_BEGIN_NAMESPACE
 
 class Ui_users
 {
 public:
+    QGridLayout *gridLayout;
     QListView *listView;
-    QWidget *layoutWidget;
     QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout_4;
     QLabel *label_3;
@@ -56,19 +56,19 @@ public:
     {
         if (users->objectName().isEmpty())
             users->setObjectName(QString::fromUtf8("users"));
-        users->resize(580, 256);
+        users->resize(527, 255);
+        gridLayout = new QGridLayout(users);
+        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         listView = new QListView(users);
         listView->setObjectName(QString::fromUtf8("listView"));
-        listView->setGeometry(QRect(10, 10, 238, 237));
-        layoutWidget = new QWidget(users);
-        layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-        layoutWidget->setGeometry(QRect(254, 11, 321, 241));
-        verticalLayout = new QVBoxLayout(layoutWidget);
+
+        gridLayout->addWidget(listView, 0, 0, 1, 1);
+
+        verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-        verticalLayout->setContentsMargins(0, 0, 0, 0);
         horizontalLayout_4 = new QHBoxLayout();
         horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
-        label_3 = new QLabel(layoutWidget);
+        label_3 = new QLabel(users);
         label_3->setObjectName(QString::fromUtf8("label_3"));
 
         horizontalLayout_4->addWidget(label_3);
@@ -77,7 +77,7 @@ public:
 
         horizontalLayout_4->addItem(horizontalSpacer_3);
 
-        lineEdit_3 = new QLineEdit(layoutWidget);
+        lineEdit_3 = new QLineEdit(users);
         lineEdit_3->setObjectName(QString::fromUtf8("lineEdit_3"));
 
         horizontalLayout_4->addWidget(lineEdit_3);
@@ -87,7 +87,7 @@ public:
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        label = new QLabel(layoutWidget);
+        label = new QLabel(users);
         label->setObjectName(QString::fromUtf8("label"));
 
         horizontalLayout->addWidget(label);
@@ -96,7 +96,7 @@ public:
 
         horizontalLayout->addItem(horizontalSpacer_4);
 
-        lineEdit = new QLineEdit(layoutWidget);
+        lineEdit = new QLineEdit(users);
         lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
 
         horizontalLayout->addWidget(lineEdit);
@@ -106,7 +106,7 @@ public:
 
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
-        label_2 = new QLabel(layoutWidget);
+        label_2 = new QLabel(users);
         label_2->setObjectName(QString::fromUtf8("label_2"));
 
         horizontalLayout_2->addWidget(label_2);
@@ -115,7 +115,7 @@ public:
 
         horizontalLayout_2->addItem(horizontalSpacer);
 
-        lineEdit_2 = new QLineEdit(layoutWidget);
+        lineEdit_2 = new QLineEdit(users);
         lineEdit_2->setObjectName(QString::fromUtf8("lineEdit_2"));
 
         horizontalLayout_2->addWidget(lineEdit_2);
@@ -129,7 +129,7 @@ public:
 
         horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
-        pushButton = new QPushButton(layoutWidget);
+        pushButton = new QPushButton(users);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
 
         horizontalLayout_3->addWidget(pushButton);
@@ -138,7 +138,7 @@ public:
 
         horizontalLayout_3->addItem(horizontalSpacer_2);
 
-        buttonBox = new QDialogButtonBox(layoutWidget);
+        buttonBox = new QDialogButtonBox(users);
         buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
@@ -149,6 +149,9 @@ public:
         verticalLayout->addLayout(horizontalLayout_3);
 
 
+        gridLayout->addLayout(verticalLayout, 0, 1, 1, 1);
+
+
         retranslateUi(users);
 
         QMetaObject::connectSlotsByName(users);
@@ -156,7 +159,7 @@ public:
 
     void retranslateUi(QDialog *users)
     {
-        users->setWindowTitle(QApplication::translate("users", "Dialog", 0, QApplication::UnicodeUTF8));
+        users->setWindowTitle(QApplication::translate("users", "\320\237\320\276\320\273\321\214\320\267\320\276\320\262\320\260\321\202\320\265\320\273\320\270", 0, QApplication::UnicodeUTF8));
         label_3->setText(QApplication::translate("users", "\320\244\320\230\320\236", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("users", "\320\233\320\276\320\263\320\270\320\275", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("users", "\320\237\320\260\321\200\320\276\320\273\321\214", 0, QApplication::UnicodeUTF8));
