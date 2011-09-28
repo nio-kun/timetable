@@ -4,6 +4,9 @@
 #include <QDialog>
 #include <QAbstractButton>
 #include <QSqlDatabase>
+#include "QMessageBox"
+#include <QSqlError>
+#include "mainwindow.h"
 
 namespace Ui {
     class authorization;
@@ -24,9 +27,11 @@ private slots:
 
     void on_buttonBox_accepted();
 
+    void on_pushButton_2_clicked();
+
 private:
     Ui::authorization *ui;
-    QSqlDatabase *db;
+    QSqlDatabase db;
 };
 
 #endif // AUTHORIZATION_H
