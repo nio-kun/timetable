@@ -51,7 +51,7 @@ void settings::on_pushButton_clicked()
         file.close();
         close();
     }else{
-        QMessageBox::information(0, "Ошибка писи файла","Невозможно записать файл с настройками.", 0,0,0);
+        QMessageBox::information(0, "Ошибка записи файла","Невозможно записать файл с настройками.", 0,0,0);
     }
 }
 
