@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>477</width>
-    <height>273</height>
+    <height>291</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Параметры обслуживания</string>
+   <string>Постановка на обслуживание</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
