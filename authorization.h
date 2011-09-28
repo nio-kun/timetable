@@ -4,7 +4,7 @@
 #include <QDialog>
 #include <QAbstractButton>
 #include <QSqlDatabase>
-#include "QMessageBox"
+#include <QMessageBox>
 #include <QSqlError>
 #include <QSqlQuery>
 #include "mainwindow.h"
@@ -29,6 +29,7 @@ private slots:
 
     void on_pushButton_clicked();
     void closeEvent(QCloseEvent *event);
+
 private:
     Ui::authorization *ui;
     QSqlDatabase *db;

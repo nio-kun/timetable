@@ -37,25 +37,25 @@ void authorization::on_pushButton_2_clicked()
     db->setPassword(ui->lineEdit_2->text());
     if( db->open() ){
         QSqlQuery query (*db);
-        query.prepare ("select fio from users where fio= :login");
+        query.prepare ("select count(*) from users where login= :login");
         query.bindValue(":login", ui->lineEdit->text());
 
 
         if ( query.exec()){
             //QMessageBox::information(0, "Ошибка авторизации","Ура!!!", 0,0,0);
             query.next();
-            if (query.value(0).toString()==ui->lineEdit->text()){
+            if (query.value(0).toInt()>0){
                 this->hide();
             }else{
                 QMessageBox::information(0, "Ошибка авторизации","Авторизация не удалась", 0,0,0);
             }
         }else{
-//            QMessageBox::information(0, "Ошибка авторизации",db->lastError().text(), 0,0,0);
-            QMessageBox::information(0, "Ошибка авторизации","Авторизация не удалась", 0,0,0);
+            QMessageBox::information(0, "Ошибка авторизации",db->lastError().text(), 0,0,0);
+//            QMessageBox::information(0, "Ошибка авторизации","Авторизация не удалась", 0,0,0);
         }
     }else{
-//        QMessageBox::information(0, "Ошибка авторизации",db->lastError().text(), 0,0,0);
-        QMessageBox::information(0, "Ошибка авторизации","Авторизация не удалась", 0,0,0);
+        QMessageBox::information(0, "Ошибка авторизации",db->lastError().text(), 0,0,0);
+//        QMessageBox::information(0, "Ошибка авторизации","Авторизация не удалась", 0,0,0);
     }
 
 }
