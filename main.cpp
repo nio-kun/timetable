@@ -8,6 +8,6 @@ int main(int argc, char *argv[])
     MainWindow w;
     authorization au;
 w.show();
-
+    //au.show();
     return a.exec();
 }

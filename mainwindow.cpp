@@ -6,6 +6,7 @@
 #include "authorization.h"
 
 #include "ui_mainwindow.h"
+#include "authorization.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -40,6 +41,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->ttable->insertRow(10);
     ui->ttable->insertRow(11);
     ui->ttable->setVerticalHeaderLabels(lbls);
+
+    db = QSqlDatabase::addDatabase("QMYSQL");
+    db.setDatabaseName("timetable");
+
+    authorization a(&db);
+    a.exec();
+
 }
 
 MainWindow::~MainWindow()
@@ -54,13 +62,13 @@ void MainWindow::on_action_2_triggered()
 
 void MainWindow::on_action_triggered()
 {
- settings s;
+ settings s(&db);
  s.exec();
 }
 
 void MainWindow::on_action_3_triggered()
 {
-    places s;
+    places s(&db);
     s.exec();
 }
 
