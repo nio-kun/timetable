@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'authorization.ui'
 **
-** Created: Wed Sep 28 14:59:26 2011
+** Created: Wed Sep 28 19:15:05 2011
 **      by: Qt User Interface Compiler version 4.7.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -16,19 +16,19 @@
 #include <QtGui/QButtonGroup>
 #include <QtGui/QDialog>
 #include <QtGui/QDialogButtonBox>
+#include <QtGui/QGridLayout>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QSpacerItem>
-#include <QtGui/QVBoxLayout>
 
 QT_BEGIN_NAMESPACE
 
 class Ui_authorization
 {
 public:
-    QVBoxLayout *verticalLayout;
+    QGridLayout *gridLayout;
     QHBoxLayout *horizontalLayout_2;
     QLabel *label;
     QLineEdit *lineEdit_2;
@@ -42,11 +42,9 @@ public:
     {
         if (authorization->objectName().isEmpty())
             authorization->setObjectName(QString::fromUtf8("authorization"));
-        authorization->resize(312, 119);
-        authorization->setSizeGripEnabled(false);
-        authorization->setModal(false);
-        verticalLayout = new QVBoxLayout(authorization);
-        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        authorization->resize(313, 127);
+        gridLayout = new QGridLayout(authorization);
+        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
         label = new QLabel(authorization);
@@ -63,7 +61,7 @@ public:
         horizontalLayout_2->addWidget(lineEdit_2);
 
 
-        verticalLayout->addLayout(horizontalLayout_2);
+        gridLayout->addLayout(horizontalLayout_2, 0, 0, 1, 1);
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
@@ -85,30 +83,29 @@ public:
         horizontalLayout->addWidget(lineEdit);
 
 
-        verticalLayout->addLayout(horizontalLayout);
+        gridLayout->addLayout(horizontalLayout, 1, 0, 1, 1);
 
-        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        verticalSpacer = new QSpacerItem(20, 7, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        verticalLayout->addItem(verticalSpacer);
+        gridLayout->addItem(verticalSpacer, 2, 0, 1, 1);
 
         buttonBox = new QDialogButtonBox(authorization);
         buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+        buttonBox->setCenterButtons(true);
 
-        verticalLayout->addWidget(buttonBox);
+        gridLayout->addWidget(buttonBox, 3, 0, 1, 1);
 
 
         retranslateUi(authorization);
-        QObject::connect(buttonBox, SIGNAL(accepted()), authorization, SLOT(accept()));
-        QObject::connect(buttonBox, SIGNAL(rejected()), authorization, SLOT(reject()));
 
         QMetaObject::connectSlotsByName(authorization);
     } // setupUi
 
     void retranslateUi(QDialog *authorization)
     {
-        authorization->setWindowTitle(QApplication::translate("authorization", "\320\220\320\262\321\202\320\276\321\200\320\270\320\267\320\260\321\206\320\270\321\217", 0, QApplication::UnicodeUTF8));
+        authorization->setWindowTitle(QApplication::translate("authorization", "Dialog", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("authorization", "\320\233\320\276\320\263\320\270\320\275", 0, QApplication::UnicodeUTF8));
         lineEdit_2->setText(QString());
         label_2->setText(QApplication::translate("authorization", "\320\237\320\260\321\200\320\276\320\273\321\214", 0, QApplication::UnicodeUTF8));

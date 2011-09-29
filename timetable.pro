@@ -28,9 +28,9 @@ HEADERS  += mainwindow.h \
     users.h
 
 FORMS    += mainwindow.ui \
-    authorization.ui \
     settings.ui \
     order_details.ui \
     places.ui \
     services.ui \
-    users.ui
+    users.ui \
+    authorization.ui

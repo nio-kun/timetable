@@ -35,6 +35,7 @@
     </property>
     <addaction name="separator"/>
     <addaction name="action_2"/>
+    <addaction name="action_6"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
@@ -87,6 +88,11 @@
   <action name="action">
    <property name="text">
     <string>Параметры</string>
+   </property>
+  </action>
+  <action name="action_6">
+   <property name="text">
+    <string>Авт</string>
    </property>
   </action>
  </widget>

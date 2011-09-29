@@ -3,6 +3,8 @@
 #include "places.h"
 #include "users.h"
 #include "services.h"
+#include "authorization.h"
+
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -78,9 +80,10 @@ void MainWindow::on_pushButton_clicked()
 {
 
 
+}
 
-
-
-
-
+void MainWindow::on_action_6_triggered()
+{
+    authorization *s = new authorization;
+    s->show();
 }
