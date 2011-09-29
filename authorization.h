@@ -7,7 +7,7 @@
 #include <QMessageBox>
 #include <QSqlError>
 #include <QSqlQuery>
-#include <Qfile>
+#include <QFile>
 #include <QTextStream>
 
 
