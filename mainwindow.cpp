@@ -66,7 +66,7 @@ void MainWindow::on_action_triggered()
 
 void MainWindow::on_action_3_triggered()
 {
-    places s;
+    places s(&db);
     s.exec();
 }
 
