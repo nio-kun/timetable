@@ -79,7 +79,7 @@ void authorization::on_pushButton_3_clicked()
 
 void authorization::on_authorization_rejected()
 {
-    QMessageBox::information(0, "Ошибка авторизации","Ляля", 0,0,0);
+    QMessageBox::information(0, tr("Ошибка авторизации"),"Ляля", 0,0,0);
 }
 
 void authorization::reject()

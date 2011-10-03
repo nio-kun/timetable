@@ -49,6 +49,7 @@ private slots:
 
     void on_pushButton_4_clicked();
 
+
 private:
     Ui::places *ui;
     QSqlDatabase *db;

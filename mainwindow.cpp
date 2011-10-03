@@ -74,7 +74,7 @@ void MainWindow::on_action_3_triggered()
 
 void MainWindow::on_action_4_triggered()
 {
-    users s;
+    users s(&db);
     s.exec();
 }
 
