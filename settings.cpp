@@ -30,6 +30,18 @@ settings::settings(QSqlDatabase *kept_db, bool hide_dinner, QWidget *parent) :
             query.next();
             ui->lineEdit_4->setText(query.value(0).toString());
         }
+
+        query.exec("select value from settings where name='work_start_time'");
+        if (query.numRowsAffected()>0){
+            query.next();
+            ui->lineEdit_5->setText(query.value(0).toString());
+        }
+
+        query.exec("select value from settings where name='work_end_time'");
+        if (query.numRowsAffected()>0){
+            query.next();
+            ui->lineEdit_6->setText(query.value(0).toString());
+        }
     }
 
     if (hide_dinner){
@@ -38,6 +50,12 @@ settings::settings(QSqlDatabase *kept_db, bool hide_dinner, QWidget *parent) :
         ui->label_5->hide();
         ui->lineEdit_3->hide();
         ui->lineEdit_4->hide();
+
+        ui->label_6->hide();
+        ui->label_7->hide();
+        ui->label_8->hide();
+        ui->lineEdit_5->hide();
+        ui->lineEdit_6->hide();
     }
 }
 
@@ -67,16 +85,25 @@ void settings::on_pushButton_clicked()
     }
     if (db->isOpen()){
         QSqlQuery query;
-        query.exec("delete from settings where name='dinner_start_time'");
 
+        query.exec("delete from settings where name='dinner_start_time'");
         query.prepare ("insert into settings (name, type, value) values ('dinner_start_time','integer',:data)");
         query.bindValue(":data", ui->lineEdit_3->text());
         query.exec();
 
         query.exec("delete from settings where name='dinner_end_time'");
-
         query.prepare ("insert into settings (name, type, value) values ('dinner_end_time','integer',:data)");
         query.bindValue(":data", ui->lineEdit_4->text());
+        query.exec();
+
+        query.exec("delete from settings where name='work_start_time'");
+        query.prepare ("insert into settings (name, type, value) values ('work_start_time','integer',:data)");
+        query.bindValue(":data", ui->lineEdit_5->text());
+        query.exec();
+
+        query.exec("delete from settings where name='work_end_time'");
+        query.prepare ("insert into settings (name, type, value) values ('work_end_time','integer',:data)");
+        query.bindValue(":data", ui->lineEdit_6->text());
         query.exec();
     }
     close();
