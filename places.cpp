@@ -1,7 +1,5 @@
 #include "places.h"
 #include "ui_places.h"
-#include <QMessageBox>
-#include <QInputDialog>
 
 places::places(QWidget *parent) :
     QDialog(parent),
@@ -163,7 +161,7 @@ void places::on_pushButton_4_clicked()
 {
     if (ui->listWidget->currentRow()>-1){
         QSqlQuery query;
-        if (QMessageBox::question(0,"Удаление площадки","Удалить площадку \""+ui->listWidget->currentItem()->text()+"\"",3,4,0)==3){
+        if (QMessageBox::question(0,"Удаление площадки","Удалить площадку \""+ui->listWidget->currentItem()->text()+"\"?",3,4,0)==3){
             query.exec("delete from places where place_id="+QString::number(listvector.at(ui->listWidget->currentRow())));
             listvector.remove(ui->listWidget->currentRow());
             delete ui->listWidget->takeItem(ui->listWidget->currentRow());

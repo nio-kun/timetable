@@ -8,6 +8,9 @@
 #include <QColor>
 #include <QColorDialog>
 #include <QPixmap>
+#include <QMessageBox>
+#include <QInputDialog>
+
 
 namespace Ui {
     class places;
