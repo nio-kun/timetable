@@ -18,19 +18,30 @@ void MainWindow::MakeToolbars()
     ui->mainToolBar->addSeparator();
 
     onedayAct = new QAction(tr("One day"), this);
-    onedayAct->setIcon(QIcon::fromTheme("office-calendar", QIcon(qApp->applicationDirPath()+"/../share/mangaed/go-next.png")));
+    onedayAct->setText("1");
     onedayAct->setShortcut(Qt::CTRL+Qt::Key_1);
     connect(onedayAct, SIGNAL(triggered()), this, SLOT(onOneDay()));
     ui->mainToolBar->addAction(onedayAct);
 
 
-    /*
-   void onOneDay();
-   void onTwoDays();
-   void onThreeDays();
-   void onWeek();
+    twodaysAct = new QAction(tr("Two days"), this);
+    twodaysAct->setText("2");
+    twodaysAct->setShortcut(Qt::CTRL+Qt::Key_2);
+    connect(twodaysAct, SIGNAL(triggered()), this, SLOT(onTwoDays()));
+    ui->mainToolBar->addAction(twodaysAct);
 
-*/
+    threedaysAct = new QAction(tr("Three days"), this);
+    threedaysAct->setText("3");
+    threedaysAct->setShortcut(Qt::CTRL+Qt::Key_3);
+    connect(threedaysAct, SIGNAL(triggered()), this, SLOT(onThreeDays()));
+    ui->mainToolBar->addAction(threedaysAct);
+
+    weekAct = new QAction(tr("One week"), this);
+    weekAct->setText("7");
+    weekAct->setShortcut(Qt::CTRL+Qt::Key_7);
+    connect(weekAct, SIGNAL(triggered()), this, SLOT(onWeek()));
+    ui->mainToolBar->addAction(weekAct);
+
 }
 
 #endif // TOOLBARS_H

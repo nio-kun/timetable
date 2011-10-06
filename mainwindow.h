@@ -31,6 +31,7 @@ private slots:
 //private Q_SLOTS:
    void MakeToolbars();
    void ClearTTable();
+   void SetDays(int DaysCount);
    void onPrev();
    void onNext();
    void onOneDay();

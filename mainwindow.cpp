@@ -40,7 +40,8 @@ MainWindow::MainWindow(QWidget *parent) :
      h = new HMultiHeader(tw, Qt::Horizontal);
     tw->setHorizontalHeader(h);
 
-onOneDay();
+//onOneDay();
+    onTwoDays();
 
 
 }
@@ -108,37 +109,60 @@ void MainWindow::ClearTTable(){
         for (int i=0;i<=m;i++) ui->ttable->removeColumn(0);
         int n=ui->ttable->rowCount();
         for (int i=0;i<=n;i++) ui->ttable->removeRow(0);
-}
-
-void MainWindow::onOneDay(){
-ClearTTable();
-    //Создаём заголовки таблицы
         //Строки
-        QStringList lblsH, lblsV;
+        QStringList lblsH;
         for (int i=8;i<20;i++)
         {
             lblsH.append(QString("%1:00").arg(i));
             ui->ttable->insertRow(i-8);
         }
         ui->ttable->setVerticalHeaderLabels(lblsH);
-
-    //Столбцы
-    if (db.isOpen()){
-        QSqlQuery query;
-        query.exec("select place_id, name from places order by name");
-        int j=0;
-        while (query.next()){
-            ui->ttable->insertColumn(j);
-            lblsV.append(QString(query.value(1).toString()));
-            j++;
-        }
-    }
-    ui->ttable->setHorizontalHeaderLabels(lblsV);
-    QString cday=day.toString("dd.MM.yyyy dddd");
-    SPANCOLS2(cday ,0,2);
 }
-void MainWindow::onTwoDays(){}
-void MainWindow::onThreeDays(){}
-void MainWindow::onWeek(){}
+
+void MainWindow::onOneDay(){SetDays(1);}
+void MainWindow::onTwoDays(){SetDays(2);}
+void MainWindow::onThreeDays(){SetDays(3);}
+void MainWindow::onWeek(){SetDays(7);}
+
+//Главнаяфункция, которая рисует дни
+void MainWindow::SetDays(int DaysCount){
+    ClearTTable(); //Очищаем таблицу
+    QStringList lblsV; //Массив заголовков
+    int placesCount;  //Число площадок
+
+  if (db.isOpen()){
+      QSqlQuery query;
+
+      //Узнаём, сколько имеется площадок
+      query.exec("select count(place_id) from places");
+      query.first();
+      placesCount= query.value(0).toInt();
+
+      //Получаем список площадок
+      query.exec("select place_id, name from places order by name");
+      query.first();
+      int j=0;
+      for (int k=0;k<DaysCount;k++){
+          // Забиваем список площадок в массив заголовков столько раз,
+          // сколько требуется показать дней
+
+          do {
+              ui->ttable->insertColumn(j);
+              lblsV.append(QString(query.value(1).toString()));
+              j++;
+          }
+          while (query.next());
+          query.first();
+      }
+  }
+  ui->ttable->setHorizontalHeaderLabels(lblsV);
+
+  //А теперь объединяем площадки в дни
+  for (int k=0;k<DaysCount;k++)
+  {
+      QString cday=day.addDays(k).toString("dd.MM.yyyy dddd");
+      SPANCOLS2(cday, 0+(ui->ttable->columnCount()/DaysCount)*k,(ui->ttable->columnCount()/DaysCount)-1+placesCount*k);
+  }
+}
 
 

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainwindow.h'
 **
-** Created: Thu Oct 6 21:09:40 2011
+** Created: Fri Oct 7 00:43:51 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MainWindow[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      15,   14, // methods
+      16,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -40,12 +40,13 @@ static const uint qt_meta_data_MainWindow[] = {
      160,  154,   11,   11, 0x08,
      197,   11,   11,   11, 0x08,
      212,   11,   11,   11, 0x08,
-     226,   11,   11,   11, 0x08,
-     235,   11,   11,   11, 0x08,
-     244,   11,   11,   11, 0x08,
-     255,   11,   11,   11, 0x08,
+     236,  226,   11,   11, 0x08,
+     249,   11,   11,   11, 0x08,
+     258,   11,   11,   11, 0x08,
      267,   11,   11,   11, 0x08,
-     281,   11,   11,   11, 0x08,
+     278,   11,   11,   11, 0x08,
+     290,   11,   11,   11, 0x08,
+     304,   11,   11,   11, 0x08,
 
        0        // eod
 };
@@ -56,9 +57,10 @@ static const char qt_meta_stringdata_MainWindow[] = {
     "on_action_4_triggered()\0on_action_5_triggered()\0"
     "on_action_6_triggered()\0index\0"
     "on_ttable_doubleClicked(QModelIndex)\0"
-    "MakeToolbars()\0ClearTTable()\0onPrev()\0"
-    "onNext()\0onOneDay()\0onTwoDays()\0"
-    "onThreeDays()\0onWeek()\0"
+    "MakeToolbars()\0ClearTTable()\0DaysCount\0"
+    "SetDays(int)\0onPrev()\0onNext()\0"
+    "onOneDay()\0onTwoDays()\0onThreeDays()\0"
+    "onWeek()\0"
 };
 
 const QMetaObject MainWindow::staticMetaObject = {
@@ -99,15 +101,16 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 6: on_ttable_doubleClicked((*reinterpret_cast< QModelIndex(*)>(_a[1]))); break;
         case 7: MakeToolbars(); break;
         case 8: ClearTTable(); break;
-        case 9: onPrev(); break;
-        case 10: onNext(); break;
-        case 11: onOneDay(); break;
-        case 12: onTwoDays(); break;
-        case 13: onThreeDays(); break;
-        case 14: onWeek(); break;
+        case 9: SetDays((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 10: onPrev(); break;
+        case 11: onNext(); break;
+        case 12: onOneDay(); break;
+        case 13: onTwoDays(); break;
+        case 14: onThreeDays(); break;
+        case 15: onWeek(); break;
         default: ;
         }
-        _id -= 15;
+        _id -= 16;
     }
     return _id;
 }
