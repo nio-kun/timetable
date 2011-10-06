@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'services.ui'
 **
-** Created: Fri Sep 30 00:43:43 2011
+** Created: Thu Oct 6 21:09:31 2011
 **      by: Qt User Interface Compiler version 4.7.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -19,8 +19,9 @@
 #include <QtGui/QGridLayout>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QHeaderView>
-#include <QtGui/QListView>
-#include <QtGui/QPlainTextEdit>
+#include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
+#include <QtGui/QListWidget>
 #include <QtGui/QPushButton>
 #include <QtGui/QSpacerItem>
 #include <QtGui/QVBoxLayout>
@@ -32,9 +33,16 @@ class Ui_services
 public:
     QGridLayout *gridLayout;
     QHBoxLayout *horizontalLayout;
-    QListView *listView;
+    QListWidget *listWidget;
     QVBoxLayout *verticalLayout;
-    QPlainTextEdit *plainTextEdit;
+    QHBoxLayout *horizontalLayout_4;
+    QLabel *label;
+    QLineEdit *lineEdit;
+    QSpacerItem *verticalSpacer;
+    QHBoxLayout *horizontalLayout_2;
+    QPushButton *pushButton_2;
+    QPushButton *pushButton_3;
+    QSpacerItem *horizontalSpacer;
     QHBoxLayout *horizontalLayout_3;
     QPushButton *pushButton;
     QSpacerItem *horizontalSpacer_2;
@@ -49,17 +57,50 @@ public:
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        listView = new QListView(services);
-        listView->setObjectName(QString::fromUtf8("listView"));
+        listWidget = new QListWidget(services);
+        listWidget->setObjectName(QString::fromUtf8("listWidget"));
 
-        horizontalLayout->addWidget(listView);
+        horizontalLayout->addWidget(listWidget);
 
         verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-        plainTextEdit = new QPlainTextEdit(services);
-        plainTextEdit->setObjectName(QString::fromUtf8("plainTextEdit"));
+        horizontalLayout_4 = new QHBoxLayout();
+        horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
+        label = new QLabel(services);
+        label->setObjectName(QString::fromUtf8("label"));
 
-        verticalLayout->addWidget(plainTextEdit);
+        horizontalLayout_4->addWidget(label);
+
+        lineEdit = new QLineEdit(services);
+        lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
+
+        horizontalLayout_4->addWidget(lineEdit);
+
+
+        verticalLayout->addLayout(horizontalLayout_4);
+
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout->addItem(verticalSpacer);
+
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
+        pushButton_2 = new QPushButton(services);
+        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
+
+        horizontalLayout_2->addWidget(pushButton_2);
+
+        pushButton_3 = new QPushButton(services);
+        pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
+
+        horizontalLayout_2->addWidget(pushButton_3);
+
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_2->addItem(horizontalSpacer);
+
+
+        verticalLayout->addLayout(horizontalLayout_2);
 
         horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
@@ -97,6 +138,9 @@ public:
     void retranslateUi(QDialog *services)
     {
         services->setWindowTitle(QApplication::translate("services", "\320\243\321\201\320\273\321\203\320\263\320\270", 0, QApplication::UnicodeUTF8));
+        label->setText(QApplication::translate("services", "\320\235\320\260\320\267\320\262\320\260\320\275\320\270\320\265 \321\203\321\201\320\273\321\203\320\263\320\270", 0, QApplication::UnicodeUTF8));
+        pushButton_2->setText(QApplication::translate("services", "\320\224\320\276\320\261\320\260\320\262\320\270\321\202\321\214", 0, QApplication::UnicodeUTF8));
+        pushButton_3->setText(QApplication::translate("services", "\320\243\320\264\320\260\320\273\320\270\321\202\321\214", 0, QApplication::UnicodeUTF8));
         pushButton->setText(QApplication::translate("services", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 

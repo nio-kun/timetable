@@ -75,7 +75,7 @@ void MainWindow::on_action_4_triggered()
 
 void MainWindow::on_action_5_triggered()
 {
-    services s;
+    services s(&db);
     s.exec();
 }
 

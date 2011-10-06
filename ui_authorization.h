@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'authorization.ui'
 **
-** Created: Fri Sep 30 00:43:43 2011
+** Created: Thu Oct 6 21:09:31 2011
 **      by: Qt User Interface Compiler version 4.7.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
