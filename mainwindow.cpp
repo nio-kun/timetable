@@ -96,11 +96,13 @@ void MainWindow::on_ttable_doubleClicked(QModelIndex index)
 
 void MainWindow::onPrev()
 {
-
+day=day.addDays(-1);
+SetDays(Days);
 }
 
 void MainWindow::onNext(){
-
+    day=day.addDays(1);
+    SetDays(Days);
 }
 
 void MainWindow::ClearTTable(){
@@ -119,10 +121,10 @@ void MainWindow::ClearTTable(){
         ui->ttable->setVerticalHeaderLabels(lblsH);
 }
 
-void MainWindow::onOneDay(){SetDays(1);}
-void MainWindow::onTwoDays(){SetDays(2);}
-void MainWindow::onThreeDays(){SetDays(3);}
-void MainWindow::onWeek(){SetDays(7);}
+void MainWindow::onOneDay(){Days=1; SetDays(1);}
+void MainWindow::onTwoDays(){Days=2; SetDays(2);}
+void MainWindow::onThreeDays(){Days=3; SetDays(3);}
+void MainWindow::onWeek(){Days=7; SetDays(7);}
 
 //Главнаяфункция, которая рисует дни
 void MainWindow::SetDays(int DaysCount){

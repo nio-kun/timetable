@@ -44,6 +44,7 @@ private:
     QSqlDatabase db;
     HMultiHeader *h;
     QDate day;
+    int Days;
     QAction *prevAct;
     QAction *nextAct;
     QAction *onedayAct;
