@@ -16,158 +16,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <widget class="QTableWidget" name="ttable">
-      <row>
-       <property name="text">
-        <string>Новая строка</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>Новая строка</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>Новая строка</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>Новая строка</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>Новая строка</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>Новая строка</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>Новая строка</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>Новая строка</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>Новая строка</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>Новая строка</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>Новая строка</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>Новая строка</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>Новая строка</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>Новая строка</string>
-       </property>
-      </row>
-      <row>
-       <property name="text">
-        <string>Новая строка</string>
-       </property>
-      </row>
-      <column>
-       <property name="text">
-        <string>Новый столбец</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Новый столбец</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Новый столбец</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Новый столбец</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Новый столбец</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Новый столбец</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Новый столбец</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Новый столбец</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Новый столбец</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Новый столбец</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Новый столбец</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Новый столбец</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Новый столбец</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Новый столбец</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Новый столбец</string>
-       </property>
-      </column>
-     </widget>
+     <widget class="QTableWidget" name="ttable"/>
     </item>
    </layout>
   </widget>
@@ -177,7 +26,7 @@
      <x>0</x>
      <y>0</y>
      <width>766</width>
-     <height>18</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -186,7 +35,6 @@
     </property>
     <addaction name="separator"/>
     <addaction name="action_2"/>
-    <addaction name="action_6"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">

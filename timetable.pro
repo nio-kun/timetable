@@ -27,7 +27,8 @@ HEADERS  += mainwindow.h \
     places.h \
     services.h \
     users.h \
-    mheader.h
+    mheader.h \
+    toolbars.h
 
 FORMS    += mainwindow.ui \
     settings.ui \

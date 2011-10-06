@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Fri Sep 30 00:43:43 2011
+** Created: Wed Oct 5 00:19:54 2011
 **      by: Qt User Interface Compiler version 4.7.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -96,7 +96,6 @@ public:
         menuBar->addAction(menu_3->menuAction());
         menu->addSeparator();
         menu->addAction(action_2);
-        menu->addAction(action_6);
         menu_2->addAction(action_3);
         menu_2->addAction(action_4);
         menu_2->addAction(action_5);

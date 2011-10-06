@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'settings.ui'
 **
-** Created: Fri Sep 30 00:43:43 2011
+** Created: Wed Oct 5 20:59:22 2011
 **      by: Qt User Interface Compiler version 4.7.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -36,6 +36,13 @@ public:
     QLineEdit *lineEdit;
     QLabel *label_2;
     QLineEdit *lineEdit_2;
+    QHBoxLayout *horizontalLayout_4;
+    QLabel *label_6;
+    QSpacerItem *horizontalSpacer_3;
+    QLineEdit *lineEdit_5;
+    QLabel *label_7;
+    QLineEdit *lineEdit_6;
+    QLabel *label_8;
     QHBoxLayout *horizontalLayout;
     QLabel *label_3;
     QSpacerItem *horizontalSpacer;
@@ -52,7 +59,7 @@ public:
     {
         if (settings->objectName().isEmpty())
             settings->setObjectName(QString::fromUtf8("settings"));
-        settings->resize(380, 153);
+        settings->resize(380, 178);
         verticalLayout = new QVBoxLayout(settings);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         groupBox = new QGroupBox(settings);
@@ -88,6 +95,42 @@ public:
 
 
         verticalLayout->addWidget(groupBox);
+
+        horizontalLayout_4 = new QHBoxLayout();
+        horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
+        label_6 = new QLabel(settings);
+        label_6->setObjectName(QString::fromUtf8("label_6"));
+
+        horizontalLayout_4->addWidget(label_6);
+
+        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_4->addItem(horizontalSpacer_3);
+
+        lineEdit_5 = new QLineEdit(settings);
+        lineEdit_5->setObjectName(QString::fromUtf8("lineEdit_5"));
+        lineEdit_5->setMaximumSize(QSize(25, 16777215));
+
+        horizontalLayout_4->addWidget(lineEdit_5);
+
+        label_7 = new QLabel(settings);
+        label_7->setObjectName(QString::fromUtf8("label_7"));
+
+        horizontalLayout_4->addWidget(label_7);
+
+        lineEdit_6 = new QLineEdit(settings);
+        lineEdit_6->setObjectName(QString::fromUtf8("lineEdit_6"));
+        lineEdit_6->setMaximumSize(QSize(25, 16777215));
+
+        horizontalLayout_4->addWidget(lineEdit_6);
+
+        label_8 = new QLabel(settings);
+        label_8->setObjectName(QString::fromUtf8("label_8"));
+
+        horizontalLayout_4->addWidget(label_8);
+
+
+        verticalLayout->addLayout(horizontalLayout_4);
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
@@ -157,6 +200,11 @@ public:
         label->setText(QApplication::translate("settings", "\320\220\320\264\321\200\320\265\321\201:", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("settings", "\320\237\320\276\321\200\321\202:", 0, QApplication::UnicodeUTF8));
         lineEdit_2->setText(QApplication::translate("settings", "3306", 0, QApplication::UnicodeUTF8));
+        label_6->setText(QApplication::translate("settings", "\320\222\321\200\320\265\320\274\321\217 \321\200\320\260\320\261\320\276\321\202\321\213 \321\201 ", 0, QApplication::UnicodeUTF8));
+        lineEdit_5->setText(QApplication::translate("settings", "9", 0, QApplication::UnicodeUTF8));
+        label_7->setText(QApplication::translate("settings", ":00 \320\264\320\276", 0, QApplication::UnicodeUTF8));
+        lineEdit_6->setText(QApplication::translate("settings", "18", 0, QApplication::UnicodeUTF8));
+        label_8->setText(QApplication::translate("settings", ":00", 0, QApplication::UnicodeUTF8));
         label_3->setText(QApplication::translate("settings", "\320\236\320\261\320\265\320\264\320\265\320\275\320\275\321\213\320\271 \320\277\320\265\321\200\320\265\321\200\321\213\320\262 \321\201 ", 0, QApplication::UnicodeUTF8));
         lineEdit_3->setText(QApplication::translate("settings", "12", 0, QApplication::UnicodeUTF8));
         label_4->setText(QApplication::translate("settings", ":00 \320\264\320\276", 0, QApplication::UnicodeUTF8));

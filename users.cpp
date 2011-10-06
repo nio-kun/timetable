@@ -35,7 +35,7 @@ void users::on_listWidget_currentRowChanged(int currentRow)
 {
     if (ui->listWidget->currentRow()>-1){
         QSqlQuery query;
-        query.exec("select user_id, login, FIO from users where user_id="+QString::number(listvector.at(currentRow)));
+        query.exec("select user_id, login, fio from users where user_id="+QString::number(listvector.at(currentRow)));
         query.next();
         ui->lineEdit_3->setText(query.value(2).toString());
         ui->lineEdit->setText(query.value(1).toString());
