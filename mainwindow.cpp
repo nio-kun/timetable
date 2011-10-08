@@ -39,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QTableWidget *tw = ui->ttable;
      h = new HMultiHeader(tw, Qt::Horizontal);
     tw->setHorizontalHeader(h);
+    tw->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 
 //onOneDay();
     onTwoDays();
