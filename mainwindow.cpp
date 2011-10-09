@@ -39,10 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QTableWidget *tw = ui->ttable;
      h = new HMultiHeader(tw, Qt::Horizontal);
     tw->setHorizontalHeader(h);
-
-//onOneDay();
-    onTwoDays();
-
+onOneDay();
 
 }
 
@@ -152,6 +149,15 @@ void MainWindow::SetDays(int DaysCount){
               ui->ttable->insertColumn(j);
               lblsV.append(QString(query.value(1).toString()));
               j++;
+
+              //Добавим в полученный столбец данные
+              QSqlQuery q;
+              q.exec("select TIME(date), client_id, service_id, hours from ttable where place_id="+query.value(0).toString()+" and DATE(date)='"+day.addDays(k).toString("yyyy-MM-dd")+"'");
+              q.first();
+
+
+
+
           }
           while (query.next());
           query.first();
