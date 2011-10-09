@@ -168,8 +168,8 @@ void MainWindow::SetDays(int DaysCount){
                   //Сначала считываем их из таблицы
                   subq.exec("select * from clients where client_id="+q.value(1).toString()+";"); subq.first();
                   subq2.exec("select * from services where service_id="+q.value(2).toString()+";"); subq2.first();
-
                   QTableWidgetItem *newItem = new QTableWidgetItem(subq.value(1).toString());
+                  if (DaysCount==1) newItem->setText(subq.value(1).toString()+" "+subq2.value(1).toString());
                   newItem->setBackgroundColor(colr);
                   QString ttip = subq.value(1).toString()+"\n"+subq2.value(1).toString()+"\n"+subq.value(3).toString()+"\n"+subq.value(2).toString();
                   newItem->setToolTip(ttip);
