@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'order_details.ui'
 **
-** Created: Sun Oct 9 15:41:57 2011
+** Created: Mon Oct 10 18:33:29 2011
 **      by: Qt User Interface Compiler version 4.7.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -15,13 +15,13 @@
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
 #include <QtGui/QCheckBox>
+#include <QtGui/QComboBox>
 #include <QtGui/QDialog>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QGridLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
-#include <QtGui/QPlainTextEdit>
 
 QT_BEGIN_NAMESPACE
 
@@ -39,16 +39,16 @@ public:
     QLineEdit *lineEdit_4;
     QLabel *label_7;
     QLabel *label_5;
-    QPlainTextEdit *plainTextEdit;
     QLabel *label_6;
     QCheckBox *checkBox;
     QDialogButtonBox *buttonBox;
+    QComboBox *comboBox;
 
     void setupUi(QDialog *order_details)
     {
         if (order_details->objectName().isEmpty())
             order_details->setObjectName(QString::fromUtf8("order_details"));
-        order_details->resize(477, 291);
+        order_details->resize(477, 234);
         gridLayout = new QGridLayout(order_details);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         label = new QLabel(order_details);
@@ -101,11 +101,6 @@ public:
 
         gridLayout->addWidget(label_5, 4, 0, 1, 1);
 
-        plainTextEdit = new QPlainTextEdit(order_details);
-        plainTextEdit->setObjectName(QString::fromUtf8("plainTextEdit"));
-
-        gridLayout->addWidget(plainTextEdit, 4, 2, 1, 2);
-
         label_6 = new QLabel(order_details);
         label_6->setObjectName(QString::fromUtf8("label_6"));
 
@@ -122,6 +117,11 @@ public:
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
 
         gridLayout->addWidget(buttonBox, 6, 1, 1, 3);
+
+        comboBox = new QComboBox(order_details);
+        comboBox->setObjectName(QString::fromUtf8("comboBox"));
+
+        gridLayout->addWidget(comboBox, 4, 2, 1, 2);
 
 
         retranslateUi(order_details);
@@ -145,9 +145,9 @@ public:
         label_6->setText(QApplication::translate("order_details", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">\320\224\320\276\320\261\320\260\320\262\320\270\321\202\321\214 \321\200\320\265\320\263\321\203\320\273\320\270\321\200\320\276\320\262\320\272\321\203</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">\321\200\320\260\320\267\320\262\320\260\320\273\320\260 \321\201\321\205\320\276\320\266\320\264\320\265\320\275\320\270\321\217</span></p></body></html>", 0, QApplication::UnicodeUTF8));
+"</style></head><body style=\" font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'MS Shell Dlg 2'; font-size:8pt;\">\320\224\320\276\320\261\320\260\320\262\320\270\321\202\321\214 \321\200\320\265\320\263\321\203\320\273\320\270\321\200\320\276\320\262\320\272\321\203</span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'MS Shell Dlg 2'; font-size:8pt;\">\321\200\320\260\320\267\320\262\320\260\320\273-\321\201\321\205\320\276\320\266\320\264\320\265\320\275\320\270\321\217</span></p></body></html>", 0, QApplication::UnicodeUTF8));
         checkBox->setText(QString());
     } // retranslateUi
 

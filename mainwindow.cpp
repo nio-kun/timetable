@@ -4,7 +4,7 @@
 #include "users.h"
 #include "services.h"
 #include "authorization.h"
-
+#include "order_details.h"
 #include "ui_mainwindow.h"
 #include "authorization.h"
 #include "mheader.h"
@@ -123,7 +123,7 @@ void MainWindow::onTwoDays(){Days=2; SetDays(2);}
 void MainWindow::onThreeDays(){Days=3; SetDays(3);}
 void MainWindow::onWeek(){Days=7; SetDays(7);}
 
-//Главнаяфункция, которая рисует дни
+//Главная функция, которая рисует дни
 void MainWindow::SetDays(int DaysCount){
     ClearTTable(); //Очищаем таблицу
     QStringList lblsV; //Массив заголовков
@@ -201,3 +201,9 @@ void MainWindow::SetDays(int DaysCount){
 }
 
 
+
+void MainWindow::on_ttable_cellDoubleClicked(int row, int column)
+{
+order_details s(&db);
+    s.exec();
+}

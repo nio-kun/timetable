@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainwindow.h'
 **
-** Created: Sun Oct 9 15:42:06 2011
+** Created: Mon Oct 10 18:40:02 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MainWindow[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      16,   14, // methods
+      17,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -47,6 +47,7 @@ static const uint qt_meta_data_MainWindow[] = {
      278,   11,   11,   11, 0x08,
      290,   11,   11,   11, 0x08,
      304,   11,   11,   11, 0x08,
+     324,  313,   11,   11, 0x08,
 
        0        // eod
 };
@@ -60,7 +61,8 @@ static const char qt_meta_stringdata_MainWindow[] = {
     "MakeToolbars()\0ClearTTable()\0DaysCount\0"
     "SetDays(int)\0onPrev()\0onNext()\0"
     "onOneDay()\0onTwoDays()\0onThreeDays()\0"
-    "onWeek()\0"
+    "onWeek()\0row,column\0"
+    "on_ttable_cellDoubleClicked(int,int)\0"
 };
 
 const QMetaObject MainWindow::staticMetaObject = {
@@ -108,9 +110,10 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 13: onTwoDays(); break;
         case 14: onThreeDays(); break;
         case 15: onWeek(); break;
+        case 16: on_ttable_cellDoubleClicked((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
         default: ;
         }
-        _id -= 16;
+        _id -= 17;
     }
     return _id;
 }

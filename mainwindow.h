@@ -39,6 +39,8 @@ private slots:
    void onThreeDays();
    void onWeek();
 
+   void on_ttable_cellDoubleClicked(int row, int column);
+
 private:
     Ui::MainWindow *ui;
     QSqlDatabase db;

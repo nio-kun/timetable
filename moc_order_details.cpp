@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'order_details.h'
 **
-** Created: Sun Oct 9 15:42:08 2011
+** Created: Mon Oct 10 18:47:35 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.2)
 **
 ** WARNING! All changes made in this file will be lost!
