@@ -105,6 +105,9 @@ void settings::on_pushButton_clicked()
         query.prepare ("insert into settings (name, type, value) values ('work_end_time','integer',:data)");
         query.bindValue(":data", ui->lineEdit_6->text());
         query.exec();
+    }else{
+        db->setHostName(ui->lineEdit->text());
+        db->setPort(ui->lineEdit_2->text().toInt());
     }
     close();
 }
