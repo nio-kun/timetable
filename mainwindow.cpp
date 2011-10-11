@@ -9,7 +9,7 @@
 #include "authorization.h"
 #include "mheader.h"
 #include "toolbars.h"
-
+#include <QBrush>
 
 
 #define SPANCOLS(txt,start,stop) \
@@ -152,6 +152,35 @@ void MainWindow::SetDays(int DaysCount){
           }
           while (query.next());
           query.first();
+      }
+
+      int dinner_start_time=0;
+      int dinner_end_time=0;
+
+      if (db.isOpen()){
+          QSqlQuery query;
+          query.exec("select value from settings where name='dinner_start_time'");
+          if (query.numRowsAffected()>0){
+              query.next();
+              dinner_start_time=query.value(0).toInt();
+          }
+
+          query.exec("select value from settings where name='dinner_end_time'");
+          if (query.numRowsAffected()>0){
+              query.next();
+              dinner_end_time=query.value(0).toInt();
+          }
+          if (dinner_start_time && dinner_end_time && dinner_start_time<dinner_end_time ){
+              QColor color(Qt::green);
+              for (int i=dinner_start_time; i<dinner_end_time; i++){
+
+                  for (int j=0; j<ui->ttable->columnCount(); j++){
+                      QTableWidgetItem *newItem1 = new QTableWidgetItem("");
+                      newItem1->setBackgroundColor(color);
+                      ui->ttable->setItem(i-8,j, newItem1);
+                  }
+              }
+          }
       }
 
       //Добавим данные
