@@ -204,6 +204,18 @@ void MainWindow::SetDays(int DaysCount){
 
 void MainWindow::on_ttable_cellDoubleClicked(int row, int column)
 {
-order_details s(&db);
+    QSqlQuery q;
+
+    //Узнаём номер площадки
+    if (db.isOpen()){
+        q.exec("select place_id from places where name='"+ui->ttable->horizontalHeaderItem(column)->text()+"';");
+        q.first();
+    }
+    //Узнаём дату и время
+    QDateTime data = QDateTime::fromString(day.addDays(column/(ui->ttable->columnCount() / Days)).toString("dd.MM.yyyy")+" "+QTime(8,0,0,0).addSecs(row*3600).toString("hh:mm:ss"), "dd.MM.yyyy hh:mm:ss");
+
+    //Вызываем форму назначения
+    order_details s(&db, q.value(0).toInt(), data);
     s.exec();
+    SetDays(Days);
 }

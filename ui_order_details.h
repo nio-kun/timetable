@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'order_details.ui'
 **
-** Created: Mon Oct 10 18:33:29 2011
+** Created: Mon Oct 10 23:13:55 2011
 **      by: Qt User Interface Compiler version 4.7.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -48,7 +48,7 @@ public:
     {
         if (order_details->objectName().isEmpty())
             order_details->setObjectName(QString::fromUtf8("order_details"));
-        order_details->resize(477, 234);
+        order_details->resize(349, 234);
         gridLayout = new QGridLayout(order_details);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         label = new QLabel(order_details);
@@ -120,6 +120,7 @@ public:
 
         comboBox = new QComboBox(order_details);
         comboBox->setObjectName(QString::fromUtf8("comboBox"));
+        comboBox->setEditable(true);
 
         gridLayout->addWidget(comboBox, 4, 2, 1, 2);
 
@@ -138,7 +139,7 @@ public:
         lineEdit->setText(QString());
         label_2->setText(QApplication::translate("order_details", "\320\244\320\230\320\236 \320\272\320\273\320\270\320\265\320\275\321\202\320\260", 0, QApplication::UnicodeUTF8));
         label_3->setText(QApplication::translate("order_details", "\320\242\320\265\320\273\320\265\321\204\320\276\320\275 \320\272\320\273\320\270\320\265\320\275\321\202\320\260", 0, QApplication::UnicodeUTF8));
-        label_4->setText(QApplication::translate("order_details", "\320\222\321\200\320\265\320\274\321\217 \320\275\320\260\321\205\320\276\320\266\320\264\320\265\320\275\320\270\321\217 \320\275\320\260 \320\277\320\273\320\276\321\211\320\260\320\264\320\272\320\265", 0, QApplication::UnicodeUTF8));
+        label_4->setText(QApplication::translate("order_details", "\320\222\321\200\320\265\320\274\321\217 \321\200\320\260\320\261\320\276\321\202", 0, QApplication::UnicodeUTF8));
         lineEdit_4->setText(QString());
         label_7->setText(QApplication::translate("order_details", "\321\207\320\260\321\201\320\276\320\262", 0, QApplication::UnicodeUTF8));
         label_5->setText(QApplication::translate("order_details", "\320\237\321\200\320\270\320\274\320\265\321\207\320\260\320\275\320\270\320\265", 0, QApplication::UnicodeUTF8));
