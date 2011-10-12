@@ -141,6 +141,8 @@ void places::on_pushButton_3_clicked()
             query.prepare("insert into places (name, color, rs) values (:name, '#000000', 0)");
             query.bindValue(":name", str);
             query.exec();
+            db->commit();
+            db->transaction();
 
             query.exec("select max(place_id) from places");
             query.next();
@@ -165,6 +167,8 @@ void places::on_pushButton_4_clicked()
             query.exec("delete from places where place_id="+QString::number(listvector.at(ui->listWidget->currentRow())));
             listvector.remove(ui->listWidget->currentRow());
             delete ui->listWidget->takeItem(ui->listWidget->currentRow());
+            db->commit();
+            db->transaction();
         }
     }else{
         QMessageBox::information(0,"Удаление невозможно","Выберите площадку для удаления",0,0,0);

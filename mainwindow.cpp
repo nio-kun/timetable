@@ -39,9 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QTableWidget *tw = ui->ttable;
      h = new HMultiHeader(tw, Qt::Horizontal);
     tw->setHorizontalHeader(h);
-
-	onOneDay();
-    tw->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+    onOneDay();
 }
 
 MainWindow::~MainWindow()
@@ -64,6 +62,7 @@ void MainWindow::on_action_3_triggered()
 {
     places s(&db);
     s.exec();
+    SetDays(Days);
 }
 
 void MainWindow::on_action_4_triggered()
@@ -105,14 +104,11 @@ void MainWindow::onNext(){
 
 void MainWindow::ClearTTable(){
     //Зачистка
-        int m=ui->ttable->columnCount();
-        for (int i=0;i<=m;i++) ui->ttable->removeColumn(0);
-        int n=ui->ttable->rowCount();
-        for (int i=0;i<=n;i++) ui->ttable->removeRow(0);
+        for (int i=0;i=ui->ttable->columnCount();i++) ui->ttable->removeColumn(0);
+        for (int i=0;i=ui->ttable->rowCount();i++) ui->ttable->removeRow(0);
         //Строки
         QStringList lblsH;
-        for (int i=8;i<20;i++)
-        {
+        for (int i=8;i<20;i++){
             lblsH.append(QString("%1:00").arg(i));
             ui->ttable->insertRow(i-8);
         }
@@ -159,7 +155,7 @@ void MainWindow::SetDays(int DaysCount){
       for (int k=0;k<DaysCount;k++){
           query.first();
           do {
-              q.exec("select TIME(date), client_id, service_id, hours from ttable where place_id="+query.value(0).toString()+" and DATE(date)='"+day.addDays(k).toString("yyyy-MM-dd")+"' order by date");
+              q.exec("select TIME(date), client_id, service_id, hours, record_id from ttable where place_id="+query.value(0).toString()+" and DATE(date)='"+day.addDays(k).toString("yyyy-MM-dd")+"' order by date");
               if (q.size()>0){
               q.first();
               do {
@@ -174,6 +170,7 @@ void MainWindow::SetDays(int DaysCount){
                   newItem->setBackgroundColor(colr);
                   QString ttip = subq.value(1).toString()+"\n"+subq2.value(1).toString()+"\n"+subq.value(3).toString()+"\n"+subq.value(2).toString();
                   newItem->setToolTip(ttip);
+                  newItem->setStatusTip(q.value(4).toString());
                   ui->ttable->setItem(row,jj, newItem);
 
                   //Заливаем фоном занятое время
@@ -181,6 +178,7 @@ void MainWindow::SetDays(int DaysCount){
                   QTableWidgetItem *bg = new QTableWidgetItem();
                   bg->setBackgroundColor(colr);
                   bg->setToolTip(ttip);
+                  bg->setStatusTip(q.value(4).toString());
                   ui->ttable->setItem(row+m,jj, bg);
                   }
               } while (q.next());
@@ -196,7 +194,7 @@ void MainWindow::SetDays(int DaysCount){
   for (int k=0;k<DaysCount;k++)
   {
       QString cday=day.addDays(k).toString("dd.MM.yyyy dddd");
-      SPANCOLS2(cday, 0+(ui->ttable->columnCount()/DaysCount)*k,(ui->ttable->columnCount()/DaysCount)-1+placesCount*k);
+      SPANCOLS2(cday, 0+(ui->ttable->columnCount()/DaysCount)*k,(ui->ttable->columnCount()/DaysCount)-1+(placesCount*k));
   }
   ui->ttable->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 }
@@ -205,8 +203,27 @@ void MainWindow::SetDays(int DaysCount){
 
 void MainWindow::on_ttable_cellDoubleClicked(int row, int column)
 {
+    if (ui->ttable->item(row,column)){
+       //Ячейка уже занята
+        if(QMessageBox::question(0,"Confirm","Are you really want to insert another work in this cell?",3,4,0)==3){
+            //Узнаём, на сколько часов нужно сократить работу
+            QSqlQuery q;
+            q.exec("select hours, date from ttable where record_id="+ui->ttable->item(row,column)->statusTip()); q.first();
+            int hours=q.value(0).toInt(); QDateTime dat = q.value(1).toDateTime();
+            int begin=dat.toString("HH").toInt();
+            int delta=hours+((begin-8)-row);
+            QVariant newHours=hours-delta;
+            q.exec("update ttable set hours="+newHours.toString()+" where record_id="+ui->ttable->item(row,column)->statusTip());
+            q.exec("select place_id from places where name='"+ui->ttable->horizontalHeaderItem(column)->text()+"';");
+            q.first();
+            QDateTime data = QDateTime::fromString(day.addDays(column/(ui->ttable->columnCount() / Days)).toString("dd.MM.yyyy")+" "+QTime(8,0,0,0).addSecs(row*3600).toString("hh:mm:ss"), "dd.MM.yyyy hh:mm:ss");
+            //Вызываем форму назначения
+            order_details s(&db, q.value(0).toInt(), data);
+            s.exec();
+            SetDays(Days);
+        }
+    }else{
     QSqlQuery q;
-
     //Узнаём номер площадки
     if (db.isOpen()){
         q.exec("select place_id from places where name='"+ui->ttable->horizontalHeaderItem(column)->text()+"';");
@@ -219,4 +236,5 @@ void MainWindow::on_ttable_cellDoubleClicked(int row, int column)
     order_details s(&db, q.value(0).toInt(), data);
     s.exec();
     SetDays(Days);
+    }
 }

@@ -41,6 +41,7 @@ private slots:
 
    void on_ttable_cellDoubleClicked(int row, int column);
 
+
 private:
     Ui::MainWindow *ui;
     QSqlDatabase db;
