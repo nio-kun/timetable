@@ -63,7 +63,7 @@ void settings::on_pushButton_clicked()
         stream << "dinner_color = "+dinner_color->name()+"\n";
         file.close();
     }else{
-        QMessageBox::information(0, "Ошибка записи файла","Невозможно записать файл с настройками.", 0,0,0);
+        QMessageBox::critical(0, "Ошибка записи файла","Невозможно записать файл с настройками.", 0,0,0);
         return;
     }
 
@@ -174,9 +174,6 @@ void settings::constructor(QSqlDatabase *kept_db, bool hide_dinner, QWidget *par
         ui->label_8->hide();
         ui->lineEdit_5->hide();
         ui->lineEdit_6->hide();
-
-        ui->label_9->hide();
-        ui->pushButton_3->hide();
     }
 }
 
