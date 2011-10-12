@@ -31,15 +31,18 @@ MainWindow::MainWindow(QWidget *parent) :
       MakeToolbars();
       day = QDate::currentDate();
 
+    dinner_color.setNamedColor("#00FF00");
+
     //Подключение к БД и авторизация
     db = QSqlDatabase::addDatabase("QMYSQL");
     db.setDatabaseName("timetable");
-    authorization a(&db);
+    authorization a(&db,&dinner_color);
     a.exec();
     QTableWidget *tw = ui->ttable;
      h = new HMultiHeader(tw, Qt::Horizontal);
     tw->setHorizontalHeader(h);
     tw->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+
 onOneDay();
 
 }
@@ -56,7 +59,7 @@ void MainWindow::on_action_2_triggered()
 
 void MainWindow::on_action_triggered()
 {
- settings s(&db);
+ settings s(&db, &dinner_color);
  s.exec();
 }
 
@@ -171,12 +174,11 @@ void MainWindow::SetDays(int DaysCount){
               dinner_end_time=query.value(0).toInt();
           }
           if (dinner_start_time && dinner_end_time && dinner_start_time<dinner_end_time ){
-              QColor color(Qt::green);
               for (int i=dinner_start_time; i<dinner_end_time; i++){
 
                   for (int j=0; j<ui->ttable->columnCount(); j++){
                       QTableWidgetItem *newItem1 = new QTableWidgetItem("");
-                      newItem1->setBackgroundColor(color);
+                      newItem1->setBackgroundColor(dinner_color);
                       ui->ttable->setItem(i-8,j, newItem1);
                   }
               }

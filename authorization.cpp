@@ -16,12 +16,13 @@ authorization::authorization(QWidget *parent) :
 
 }
 
-authorization::authorization(QSqlDatabase *kept_db, QWidget *parent) :
+authorization::authorization(QSqlDatabase *kept_db, QColor *d_color, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::authorization)
 {
     ui->setupUi(this);
     db=kept_db;
+    dinner_color=d_color;
     read_properties();
 }
 
@@ -73,7 +74,7 @@ void authorization::closeEvent(QCloseEvent *event)
 
 void authorization::on_pushButton_3_clicked()
 {
-    settings s(db, true);
+    settings s(db, dinner_color, true);
     s.exec();
 }
 
@@ -106,6 +107,8 @@ void  authorization::read_properties()
                     db->setHostName(temp_text.mid(pos+1).trimmed());
                 } else if (param=="database_port") {
                     db->setPort(temp_text.mid(pos+1).trimmed().toInt());
+                } else if (param=="dinner_color") {
+                    dinner_color->setNamedColor(temp_text.mid(pos+1).trimmed());
                 }
             }
         }

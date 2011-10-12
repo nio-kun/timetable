@@ -21,7 +21,7 @@ class authorization : public QDialog
 
 public:
     explicit authorization(QWidget *parent = 0);
-    explicit authorization(QSqlDatabase *kept_db, QWidget *parent = 0);
+    explicit authorization(QSqlDatabase *kept_db, QColor *d_color, QWidget *parent = 0);
 
     ~authorization();
 
@@ -41,6 +41,7 @@ private:
     Ui::authorization *ui;
     QSqlDatabase *db;
     void  read_properties();
+    QColor *dinner_color;
 };
 
 #endif // AUTHORIZATION_H
