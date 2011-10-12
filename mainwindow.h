@@ -5,6 +5,7 @@
 #include <QSqlDatabase>
 #include <QModelIndex>
 #include "mheader.h"
+#include <QColor>
 
 namespace Ui {
     class MainWindow;
@@ -54,6 +55,7 @@ private:
     QAction *twodaysAct;
     QAction *threedaysAct;
     QAction *weekAct;
+    QColor  dinner_color;
 };
 
 #endif // MAINWINDOW_H

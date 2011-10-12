@@ -9,7 +9,7 @@
 #include "authorization.h"
 #include "mheader.h"
 #include "toolbars.h"
-
+#include <QBrush>
 
 
 #define SPANCOLS(txt,start,stop) \
@@ -31,10 +31,12 @@ MainWindow::MainWindow(QWidget *parent) :
       MakeToolbars();
       day = QDate::currentDate();
 
+    dinner_color.setNamedColor("#00FF00");
+
     //Подключение к БД и авторизация
     db = QSqlDatabase::addDatabase("QMYSQL");
     db.setDatabaseName("timetable");
-    authorization a(&db);
+    authorization a(&db,&dinner_color);
     a.exec();
     QTableWidget *tw = ui->ttable;
      h = new HMultiHeader(tw, Qt::Horizontal);
@@ -54,7 +56,7 @@ void MainWindow::on_action_2_triggered()
 
 void MainWindow::on_action_triggered()
 {
- settings s(&db);
+ settings s(&db, &dinner_color);
  s.exec();
 }
 
@@ -148,6 +150,34 @@ void MainWindow::SetDays(int DaysCount){
           }
           while (query.next());
           query.first();
+      }
+
+      int dinner_start_time=0;
+      int dinner_end_time=0;
+
+      if (db.isOpen()){
+          QSqlQuery query;
+          query.exec("select value from settings where name='dinner_start_time'");
+          if (query.numRowsAffected()>0){
+              query.next();
+              dinner_start_time=query.value(0).toInt();
+          }
+
+          query.exec("select value from settings where name='dinner_end_time'");
+          if (query.numRowsAffected()>0){
+              query.next();
+              dinner_end_time=query.value(0).toInt();
+          }
+          if (dinner_start_time && dinner_end_time && dinner_start_time<dinner_end_time ){
+              for (int i=dinner_start_time; i<dinner_end_time; i++){
+
+                  for (int j=0; j<ui->ttable->columnCount(); j++){
+                      QTableWidgetItem *newItem1 = new QTableWidgetItem("");
+                      newItem1->setBackgroundColor(dinner_color);
+                      ui->ttable->setItem(i-8,j, newItem1);
+                  }
+              }
+          }
       }
 
       //Добавим данные

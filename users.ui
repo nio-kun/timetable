@@ -20,6 +20,12 @@
       <layout class="QHBoxLayout" name="horizontalLayout_4">
        <item>
         <widget class="QLabel" name="label_3">
+         <property name="minimumSize">
+          <size>
+           <width>37</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="text">
           <string>ФИО</string>
          </property>
@@ -39,7 +45,14 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit_3"/>
+        <widget class="QLineEdit" name="lineEdit_3">
+         <property name="minimumSize">
+          <size>
+           <width>200</width>
+           <height>0</height>
+          </size>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -47,6 +60,12 @@
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
         <widget class="QLabel" name="label">
+         <property name="minimumSize">
+          <size>
+           <width>37</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="text">
           <string>Логин</string>
          </property>
@@ -66,7 +85,14 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit"/>
+        <widget class="QLineEdit" name="lineEdit">
+         <property name="minimumSize">
+          <size>
+           <width>200</width>
+           <height>0</height>
+          </size>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -94,11 +120,48 @@
        </item>
        <item>
         <widget class="QLineEdit" name="lineEdit_2">
+         <property name="minimumSize">
+          <size>
+           <width>200</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="inputMask">
           <string/>
          </property>
          <property name="echoMode">
           <enum>QLineEdit::PasswordEchoOnEdit</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <item>
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Администратор</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_6">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkBox">
+         <property name="text">
+          <string/>
          </property>
         </widget>
        </item>

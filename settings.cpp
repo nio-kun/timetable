@@ -12,51 +12,40 @@ settings::settings(QSqlDatabase *kept_db, bool hide_dinner, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::settings)
 {
-    ui->setupUi(this);
-    db=kept_db;
-    ui->lineEdit->setText(db->hostName());
-    ui->lineEdit_2->setText(QString::number(db->port()));
+    constructor(kept_db, hide_dinner, parent);
+}
 
-    if (db->isOpen()){
-        QSqlQuery query;
-        query.exec("select value from settings where name='dinner_start_time'");
-        if (query.numRowsAffected()>0){
-            query.next();
-            ui->lineEdit_3->setText(query.value(0).toString());
-        }
+settings::settings(QSqlDatabase *kept_db, QColor *d_color, bool hide_dinner, QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::settings)
+{
+    constructor(kept_db, hide_dinner, parent);
+    dinner_color=d_color;
 
-        query.exec("select value from settings where name='dinner_end_time'");
-        if (query.numRowsAffected()>0){
-            query.next();
-            ui->lineEdit_4->setText(query.value(0).toString());
+    QFile file(qApp->applicationDirPath()+"/properties.ini");
+    if (file.open(QIODevice::ReadOnly)) {
+        QTextStream stream(&file);
+        QString temp_text;
+        int pos;
+        QString param;
+        while ( !stream.atEnd() ) {
+            temp_text=stream.readLine();
+            pos = temp_text.indexOf("=");
+            if (pos>-1){
+                param=temp_text.left(pos).trimmed();
+                if (param=="dinner_color"){
+                    dinner_color->setNamedColor(temp_text.mid(pos+1).trimmed());
+                }
+            }
         }
-
-        query.exec("select value from settings where name='work_start_time'");
-        if (query.numRowsAffected()>0){
-            query.next();
-            ui->lineEdit_5->setText(query.value(0).toString());
-        }
-
-        query.exec("select value from settings where name='work_end_time'");
-        if (query.numRowsAffected()>0){
-            query.next();
-            ui->lineEdit_6->setText(query.value(0).toString());
-        }
+        file.close();
     }
 
-    if (hide_dinner){
-        ui->label_3->hide();
-        ui->label_4->hide();
-        ui->label_5->hide();
-        ui->lineEdit_3->hide();
-        ui->lineEdit_4->hide();
 
-        ui->label_6->hide();
-        ui->label_7->hide();
-        ui->label_8->hide();
-        ui->lineEdit_5->hide();
-        ui->lineEdit_6->hide();
-    }
+    QPixmap pix(16, 16);
+    pix.fill(*dinner_color);
+    ui->pushButton_3->setIcon(pix);
+
 }
 
 settings::~settings()
@@ -71,9 +60,10 @@ void settings::on_pushButton_clicked()
         QTextStream stream(&file);
         stream << "database_host = "+ui->lineEdit->text()+"\n";
         stream << "database_port = "+ui->lineEdit_2->text()+"\n";
+        stream << "dinner_color = "+dinner_color->name()+"\n";
         file.close();
     }else{
-        QMessageBox::information(0, "Ошибка записи файла","Невозможно записать файл с настройками.", 0,0,0);
+        QMessageBox::critical(0, "Ошибка записи файла","Невозможно записать файл с настройками.", 0,0,0);
         return;
     }
 
@@ -135,4 +125,62 @@ void settings::check_dinner_time(QLineEdit *lineEdit){
 void settings::on_lineEdit_4_lostFocus()
 {
     check_dinner_time(ui->lineEdit_4);
+}
+
+
+void settings::constructor(QSqlDatabase *kept_db, bool hide_dinner, QWidget *parent)
+{
+    ui->setupUi(this);
+    db=kept_db;
+    ui->lineEdit->setText(db->hostName());
+    ui->lineEdit_2->setText(QString::number(db->port()));
+
+    if (db->isOpen()){
+        QSqlQuery query;
+        query.exec("select value from settings where name='dinner_start_time'");
+        if (query.numRowsAffected()>0){
+            query.next();
+            ui->lineEdit_3->setText(query.value(0).toString());
+        }
+
+        query.exec("select value from settings where name='dinner_end_time'");
+        if (query.numRowsAffected()>0){
+            query.next();
+            ui->lineEdit_4->setText(query.value(0).toString());
+        }
+
+        query.exec("select value from settings where name='work_start_time'");
+        if (query.numRowsAffected()>0){
+            query.next();
+            ui->lineEdit_5->setText(query.value(0).toString());
+        }
+
+        query.exec("select value from settings where name='work_end_time'");
+        if (query.numRowsAffected()>0){
+            query.next();
+            ui->lineEdit_6->setText(query.value(0).toString());
+        }
+    }
+
+    if (hide_dinner){
+        ui->label_3->hide();
+        ui->label_4->hide();
+        ui->label_5->hide();
+        ui->lineEdit_3->hide();
+        ui->lineEdit_4->hide();
+
+        ui->label_6->hide();
+        ui->label_7->hide();
+        ui->label_8->hide();
+        ui->lineEdit_5->hide();
+        ui->lineEdit_6->hide();
+    }
+}
+
+void settings::on_pushButton_3_clicked()
+{
+    *dinner_color = QColorDialog::getColor();
+    QPixmap pix(16, 16);
+    pix.fill(*dinner_color);
+    ui->pushButton_3->setIcon(pix);
 }
