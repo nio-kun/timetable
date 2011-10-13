@@ -2,6 +2,7 @@
 #include "ui_order_details.h"
 #include <QMessageBox>
 #include <QDateTime>
+#include <QSqlError>
 
 order_details::order_details(QWidget *parent) :
     QDialog(parent),
@@ -44,24 +45,97 @@ void order_details::on_buttonBox_accepted()
         //Создаём клиента
         q.exec("select MAX(client_id) from clients"); q.first();
         QVariant newid= q.value(0).toInt()+1;
-        q.exec("insert into clients (client_id, car, phone, name) values ("+newid.toString()+", '"+ui->lineEdit->text()+"', '"+ui->lineEdit_3->text()+"', '"+ui->lineEdit_2->text()+"');");
+
+        if (!q.exec("insert into clients (client_id, car, phone, name) values ("+newid.toString()+", '"+ui->lineEdit->text()+"', '"+ui->lineEdit_3->text()+"', '"+ui->lineEdit_2->text()+"');")){
+            QMessageBox::critical(0, tr("Error!"),db->lastError().text() ,0,0,0);
+        }
 
         //Находим услугу...
-        q.exec("select service_id from services where name='"+ui->comboBox->currentText()+"'"); q.first();
+        if (!q.exec("select service_id from services where name='"+ui->comboBox->currentText()+"'")){
+            QMessageBox::critical(0, tr("Error!"),db->lastError().text() ,0,0,0);
+        }
+        q.first();
         QVariant serv_id;
         if (q.size()==0){
             //...или не находим, тогда создаём новую.
-            q.exec("select MAX(service_id) from services"); q.first();
+            if (!q.exec("select MAX(service_id) from services")){
+                QMessageBox::critical(0, tr("Error!"),db->lastError().text() ,0,0,0);
+            }
+            q.first();
             serv_id= q.value(0).toInt()+1;
-            q.exec("insert into services (service_id, name) values ("+serv_id.toString()+", '"+
-                   ui->comboBox->currentText()+"');");
+            if (!q.exec("insert into services (service_id, name) values ("+serv_id.toString()+", '"+
+                   ui->comboBox->currentText()+"');")){
+                QMessageBox::critical(0, tr("Error!"),db->lastError().text() ,0,0,0);
+            }
         }else{
             serv_id=q.value(0).toInt();
         };
 
+        int work_end_time=24;
+        int work_start_time=0;
+        q.exec("select value from settings where name='work_start_time'");
+        if (q.numRowsAffected()>0){
+            q.next();
+            work_start_time=q.value(0).toInt();
+            if (work_start_time==24) work_start_time=0;
+        }
+        q.exec("select value from settings where name='work_end_time'");
+        if (q.numRowsAffected()>0){
+            q.next();
+            work_end_time=q.value(0).toInt();
+            if (work_end_time==0) work_end_time=24;
+        }
+
+
         //Добавляем запись на обслуживание
-        q.exec("insert into ttable (place_id, client_id, service_id, date, hours) values ("+QString("%1").arg(place)+", "+newid.toString()+", "+serv_id.toString()+", '"+
-               destdate.toString("yyyy-MM-dd hh:mm:ss")+"', "+ui->lineEdit_4->text()+");");
+        if ((destdate.toString("hh").toInt()+ui->lineEdit_4->text().toInt())<=work_end_time){
+            if (!q.exec("insert into ttable (place_id, client_id, service_id, date, hours) values ("+QString("%1").arg(place)+", "+newid.toString()+", "+serv_id.toString()+", '"+
+                   destdate.toString("yyyy-MM-dd hh:mm:ss")+"', "+ui->lineEdit_4->text()+");")){
+                QMessageBox::critical(0, tr("Error!"),db->lastError().text() ,0,0,0);
+            }
+        }else{
+            int remain_hours=ui->lineEdit_4->text().toInt()-work_end_time+destdate.toString("hh").toInt();
+            if (!q.exec("insert into ttable (place_id, client_id, service_id, date, hours) values ("+QString("%1").arg(place)+", "+newid.toString()+", "+serv_id.toString()+", '"+
+                   destdate.toString("yyyy-MM-dd hh:mm:ss")+"', "+QString::number(work_end_time-destdate.toString("hh").toInt())+");")){
+                QMessageBox::critical(0, tr("Error!"),  db->lastError().text() ,0,0,0);
+            }
+            QDateTime testdate=destdate.addDays(1);
+            QTime time(work_start_time,0);
+            testdate.setTime(time);
+
+            q.exec("select date, hours from ttable");
+            bool flag_insert = false;
+            while (q.next()){
+                if (q.value(0).toDate()!=testdate.date()||(q.value(0).toDateTime().toString("hh").toInt()-testdate.toString("hh").toInt())>=remain_hours){
+                    if (!q.exec("insert into ttable (place_id, client_id, service_id, date, hours) values ("+QString("%1").arg(place)+", "+newid.toString()+", "+serv_id.toString()+", '"+
+                           testdate.toString("yyyy-MM-dd hh:mm:ss")+"', "+QString::number(remain_hours)+");")){
+                        QMessageBox::critical(0, tr("Error!"),  db->lastError().text() ,0,0,0);
+                    }
+                    flag_insert = true;
+                    break;
+                }else{
+                    if ((q.value(0).toDateTime().toString("hh").toInt()+q.value(1).toInt())<work_end_time){
+                        time.setHMS(q.value(0).toDateTime().toString("hh").toInt()+q.value(1).toInt(),0,0);
+                    }else{
+                        testdate=testdate.addDays(1);
+                        time.setHMS(work_start_time,0,0);
+                    }
+                    testdate.setTime(time);
+                }
+            }
+            if (flag_insert == false){
+                if ((testdate.toString("hh").toInt()+remain_hours) > work_end_time){
+                    testdate=testdate.addDays(1);
+                    time.setHMS(work_start_time,0,0);
+                }
+                if (!q.exec("insert into ttable (place_id, client_id, service_id, date, hours) values ("+QString("%1").arg(place)+", "+newid.toString()+", "+serv_id.toString()+", '"+
+                       testdate.toString("yyyy-MM-dd hh:mm:ss")+"', "+QString::number(remain_hours)+");")){
+                    QMessageBox::critical(0, tr("Error!"),  db->lastError().text() ,0,0,0);
+                }
+
+            }
+
+        }
         db->commit();
 }else{
     QMessageBox::critical(0, tr("Error!"), tr("All fields must be filled in."),0,0,0);
