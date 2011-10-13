@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'order_details.h'
 **
-** Created: Thu Oct 13 01:32:53 2011
+** Created: Thu Oct 13 16:46:53 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.2)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_order_details[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       1,   14, // methods
+       2,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -32,12 +32,14 @@ static const uint qt_meta_data_order_details[] = {
 
  // slots: signature, parameters, type, tag, flags
       15,   14,   14,   14, 0x08,
+      56,   44,   39,   14, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_order_details[] = {
     "order_details\0\0on_buttonBox_accepted()\0"
+    "bool\0tme,rsplace\0isEmpty(QDateTime,int)\0"
 };
 
 const QMetaObject order_details::staticMetaObject = {
@@ -70,9 +72,11 @@ int order_details::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: on_buttonBox_accepted(); break;
+        case 1: { bool _r = isEmpty((*reinterpret_cast< QDateTime(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])));
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         default: ;
         }
-        _id -= 1;
+        _id -= 2;
     }
     return _id;
 }

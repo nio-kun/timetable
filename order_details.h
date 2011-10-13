@@ -22,6 +22,7 @@ public:
 
 private slots:
     void on_buttonBox_accepted();
+    bool isEmpty(QDateTime tme, int rsplace);
 
 private:
     Ui::order_details *ui;

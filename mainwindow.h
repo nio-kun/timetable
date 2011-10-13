@@ -39,7 +39,6 @@ private slots:
    void onTwoDays();
    void onThreeDays();
    void onWeek();
-
    void on_ttable_cellDoubleClicked(int row, int column);
 
 
