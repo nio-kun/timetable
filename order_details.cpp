@@ -66,45 +66,25 @@ void order_details::on_buttonBox_accepted()
         if (ui->checkBox->checkState()){
         //Если отмечено, записываем клиента на развал-схождение
         //Сначала вычисляем время окончания работ
-        QDateTime et, endtime= destdate.addSecs(ui->lineEdit_4->text().toInt()*3600);
+        QDateTime endtime= destdate.addSecs(ui->lineEdit_4->text().toInt()*3600);
 
         //Узнаём, какая площадка делает развал-схождение
         q.exec("select place_id from places where rs=1"); q.first();
         int rsplace=q.value(0).toInt();
-        //Находим ближайшее свободное время
-        while (!isEmpty(endtime, rsplace)) {
-            if (endtime.time() < QTime::fromString("18:00:00","hh:mm:ss")) {
-                endtime.addSecs(3600);
-            }else{
-            et=endtime.addDays(1);
-            endtime=QDateTime::fromString(et.toString("yyyy-MM-dd")+" 08:00:00","yyyy-MM-dd hh:mm:ss");
-                };
+
+        //Находим, когда она освободится
+        //Находим ближайшую работу
+        q.exec("select MAX(record_id), date, hours from ttable where place_id="+QString("%1").arg(rsplace)+" and date < '"+endtime.toString("yyyy-MM-dd hh:mm:ss")+"';");
+        q.first();
+        //Находим время её окончания
+        QDateTime et = q.value(1).toDateTime().addSecs(3600*q.value(2).toInt());
+
+
+        q.exec("insert into ttable (place_id, client_id, service_id, date, hours) values ("+QString("%1").arg(rsplace)+", "+newid.toString()+", "+serv_id.toString()+", '"+
+               endtime.toString("yyyy-MM-dd hh:mm:ss")+"', 1)");
         };
-};
         db->commit();
 }else{
     QMessageBox::critical(0, tr("Error!"), tr("All fields must be filled in."),0,0,0);
     };
-
-};
-bool order_details::isEmpty(QDateTime tme, QVariant rsplace)
-{
-QSqlQuery q;
-//Находим ближайшую запись, которая предшествует времени окончания работы (tme)
-q.exec("select MAX(record_id), date, hours from ttable where place_id="+rsplace.toString() +" and date<'"+tme.toString("yyyy-MM-dd hh:mm:ss")+"';"); q.first();
-//Находим время её окончания
-QDateTime endofwork= q.value(1).toDateTime().addSecs(q.value(2).toInt()*3600);
-//Теперь мы знаем, когда заканчивается работа. Ищем, когда начинается следующая
-q.exec("select MIN(record_id), date, hours from ttable where place_id="+rsplace.toString() +" and date>'"+endofwork.toString("yyyy-MM-dd hh:mm:ss")+"';");
-if (q.size()>0){ //Такая работа нашлась
-    q.first();
-    QDateTime beginnextwork=q.value(1).toDateTime();
-    if (endofwork>tme&&tme<beginnextwork) return true;
-} else {
-    //Такой работы не нашлось
-    return true;
-};
-return false;
 }
-
-

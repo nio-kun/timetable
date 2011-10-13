@@ -1,4 +1,5 @@
 *.o
 ui_*.h
 moc_*.cpp
-timetable 
+timetable
+.gitignore
