@@ -175,6 +175,7 @@ void MainWindow::SetDays(int DaysCount){
                       QTableWidgetItem *newItem1 = new QTableWidgetItem("");
                       newItem1->setBackgroundColor(dinner_color);
                       newItem1->setStatusTip("dt");
+                      newItem1->setToolTip("Dinner");
                       ui->ttable->setItem(i-8,j, newItem1);
                   }
               }
@@ -205,12 +206,14 @@ void MainWindow::SetDays(int DaysCount){
                   ui->ttable->setItem(row,jj, newItem);
 
                   //Заливаем фоном занятое время
+                  int addcell=0;
                   for (int m=1;m<q.value(3).toInt();m++){
+                      if (ui->ttable->item(row+m,jj)&&(ui->ttable->item(row+m,jj)->statusTip()=="dt")) addcell=1;
                   QTableWidgetItem *bg = new QTableWidgetItem();
                   bg->setBackgroundColor(colr);
                   bg->setToolTip(ttip);
                   bg->setStatusTip(q.value(4).toString());
-                  ui->ttable->setItem(row+m,jj, bg);
+                  ui->ttable->setItem(row+m+addcell,jj, bg);
                   }
               } while (q.next());
               };
