@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'authorization.h'
 **
-** Created: Sun Oct 9 15:42:07 2011
+** Created: Thu Oct 13 01:32:52 2011
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.2)
 **
 ** WARNING! All changes made in this file will be lost!

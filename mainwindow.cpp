@@ -174,6 +174,7 @@ void MainWindow::SetDays(int DaysCount){
                   for (int j=0; j<ui->ttable->columnCount(); j++){
                       QTableWidgetItem *newItem1 = new QTableWidgetItem("");
                       newItem1->setBackgroundColor(dinner_color);
+                      newItem1->setStatusTip("dt");
                       ui->ttable->setItem(i-8,j, newItem1);
                   }
               }
@@ -235,6 +236,11 @@ void MainWindow::on_ttable_cellDoubleClicked(int row, int column)
 {
     if (ui->ttable->item(row,column)){
        //Ячейка уже занята
+
+        //Проверяем, не обеденное ли это время
+        if (ui->ttable->item(row, column)->statusTip()=="dt") {
+            QMessageBox::critical(0,"Error!","You can't work at dinner time!");
+        } else {
         if(QMessageBox::question(0,"Confirm","Are you really want to insert another work in this cell?",3,4,0)==3){
             //Узнаём, на сколько часов нужно сократить работу
             QSqlQuery q;
@@ -251,6 +257,7 @@ void MainWindow::on_ttable_cellDoubleClicked(int row, int column)
             order_details s(&db, q.value(0).toInt(), data);
             s.exec();
             SetDays(Days);
+            }
         }
     }else{
     QSqlQuery q;
