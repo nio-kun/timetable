@@ -44,20 +44,18 @@ void authorization::on_pushButton_2_clicked()
 
 
         if ( query.exec()){
-            //QMessageBox::information(0, "Ошибка авторизации","Ура!!!", 0,0,0);
             query.next();
             if (query.value(0).toInt()>0){
                 this->hide();
             }else{
-                QMessageBox::critical(0, "Ошибка авторизации","Авторизация не удалась", 0,0,0);
+                QMessageBox::critical(0, tr("Autorization error"),tr("Autorization failed"), 0,0,0);
             }
         }else{
-            QMessageBox::critical(0, "Ошибка авторизации",db->lastError().text(), 0,0,0);
-//            QMessageBox::information(0, "Ошибка авторизации","Авторизация не удалась", 0,0,0);
+            QMessageBox::critical(0, tr("Autorization error"),db->lastError().text(), 0,0,0);
         }
     }else{
-        QMessageBox::critical(0, "Ошибка авторизации",db->lastError().text(), 0,0,0);
-//        QMessageBox::information(0, "Ошибка авторизации","Авторизация не удалась", 0,0,0);
+        QMessageBox::critical(0, tr("Autorization error"),db->lastError().text(), 0,0,0);
+
     }
 
 }
@@ -80,7 +78,7 @@ void authorization::on_pushButton_3_clicked()
 
 void authorization::on_authorization_rejected()
 {
-    QMessageBox::critical(0, tr("Ошибка авторизации"),"Ляля", 0,0,0);
+
 }
 
 void authorization::reject()
@@ -90,7 +88,6 @@ void authorization::reject()
 
 void  authorization::read_properties()
 {
-    //QMessageBox::information(0, "Kanji",db->hostName(), 0,0,0);
     QFile file(qApp->applicationDirPath()+"/properties.ini");
     if (file.open(QIODevice::ReadOnly)) {
         QTextStream stream(&file);

@@ -50,7 +50,7 @@ void users::on_pushButton_3_clicked()
     ui->lineEdit_3->setText("Фамилия Имя Отчество");
     ui->lineEdit->setText("login");
     } else {
-    QMessageBox::information(0,"Message","Please, save your changes first.");
+    QMessageBox::information(0,tr("Message"),tr("Please, save your changes first."));
     };
  }
 
@@ -102,7 +102,7 @@ void users::on_pushButton_2_clicked()
     int currow =ui->listWidget->currentRow();
 
     //Удаление пользователя
-    if (QMessageBox::question(0,"Are you sure?","Really delete?",QMessageBox::Yes,QMessageBox::No)==QMessageBox::Yes)
+    if (QMessageBox::question(0,tr("Are you sure?"),tr("Really delete?"),QMessageBox::Yes,QMessageBox::No)==QMessageBox::Yes)
     {
         QString login=ui->lineEdit->text();
         query.exec("delete from users where user_id="+QString::number(listvector.at(ui->listWidget->currentRow())));

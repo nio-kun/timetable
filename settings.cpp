@@ -63,13 +63,13 @@ void settings::on_pushButton_clicked()
         stream << "dinner_color = "+dinner_color->name()+"\n";
         file.close();
     }else{
-        QMessageBox::critical(0, "Ошибка записи файла","Невозможно записать файл с настройками.", 0,0,0);
+        QMessageBox::critical(0, tr("File write error"),tr("Settings file can't be saved"), 0,0,0);
         return;
     }
 
 
     if (ui->lineEdit_3->text().toInt() > ui->lineEdit_4->text().toInt()){
-        QMessageBox::information(0, "Ошибка","Время начала обеда не может быть больше времени окончания", 0,0,0);
+        QMessageBox::information(0, tr("Error!"),tr("Dinner initiation time cant be greater than dinner finalization time"), 0,0,0);
         ui->lineEdit_3->setFocus();
         return;
     }
@@ -117,7 +117,7 @@ void settings::check_dinner_time(QLineEdit *lineEdit){
     int val;
     val=lineEdit->text().toInt(&ok);
     if (!ok || val < 0 || val > 24){
-        QMessageBox::information(0, "Ошибка","Время обеда должно быть числом от 0 до 24", 0,0,0);
+        QMessageBox::critical(0, ("Error!"),tr("Dinner time must be an integer value from 0 to 24"), 0,0,0);
         lineEdit->setFocus();
     }
 }

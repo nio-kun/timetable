@@ -242,9 +242,9 @@ void MainWindow::on_ttable_cellDoubleClicked(int row, int column)
 
         //Проверяем, не обеденное ли это время
         if (ui->ttable->item(row, column)->statusTip()=="dt") {
-            QMessageBox::critical(0,"Error!","You can't work at dinner time!");
+            QMessageBox::critical(0,tr("Error!"),tr("You can't work at dinner time!"));
         } else {
-        if(QMessageBox::question(0,"Confirm","Are you really want to insert another work in this cell?",3,4,0)==3){
+        if(QMessageBox::question(0,tr("Confirm"),tr("Are you really want to insert another work in this cell?"),3,4,0)==3){
             //Узнаём, на сколько часов нужно сократить работу
             QSqlQuery q;
             q.exec("select hours, date from ttable where record_id="+ui->ttable->item(row,column)->statusTip()); q.first();
