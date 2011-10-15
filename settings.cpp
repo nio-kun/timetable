@@ -135,6 +135,8 @@ void settings::constructor(QSqlDatabase *kept_db, bool hide_dinner, QWidget *par
     ui->lineEdit->setText(db->hostName());
     ui->lineEdit_2->setText(QString::number(db->port()));
 
+    int isadmin=0;
+
     if (db->isOpen()){
         QSqlQuery query;
         query.exec("select value from settings where name='dinner_start_time'");
@@ -160,9 +162,13 @@ void settings::constructor(QSqlDatabase *kept_db, bool hide_dinner, QWidget *par
             query.next();
             ui->lineEdit_6->setText(query.value(0).toString());
         }
+
+        query.exec("select isadmin from users where login='"+db->userName()+"'");
+        query.next();
+        isadmin=query.value(0).toInt();
     }
 
-    if (hide_dinner){
+    if (hide_dinner || !isadmin){
         ui->label_3->hide();
         ui->label_4->hide();
         ui->label_5->hide();

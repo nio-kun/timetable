@@ -62,21 +62,44 @@ void MainWindow::on_action_triggered()
 
 void MainWindow::on_action_3_triggered()
 {
-    places s(&db);
-    s.exec();
-    SetDays(Days);
+    QSqlQuery query;
+    query.exec("select isadmin from users where login='"+db.userName()+"'");
+    query.next();
+    if (query.value(0).toInt()){
+        places s(&db);
+        s.exec();
+        SetDays(Days);
+    }else{
+        QMessageBox::critical(0,tr("Error!"),tr("You have no right to edit platforms!"));
+    }
 }
 
 void MainWindow::on_action_4_triggered()
 {
-    users s(&db);
-    s.exec();
+
+    QSqlQuery query;
+    query.exec("select isadmin from users where login='"+db.userName()+"'");
+    query.next();
+    if (query.value(0).toInt()){
+        users s(&db);
+        s.exec();
+    }else{
+        QMessageBox::critical(0,tr("Error!"),tr("You have no right to edit users!"));
+    }
 }
 
 void MainWindow::on_action_5_triggered()
 {
-    services s(&db);
-    s.exec();
+
+    QSqlQuery query;
+    query.exec("select isadmin from users where login='"+db.userName()+"'");
+    query.next();
+    if (query.value(0).toInt()){
+        services s(&db);
+        s.exec();
+    }else{
+        QMessageBox::critical(0,tr("Error!"),tr("You have no right to edit services!"));
+    }
 }
 
 
