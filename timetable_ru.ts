@@ -79,55 +79,73 @@
         <translation>Одна неделя</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="245"/>
+        <location filename="mainwindow.cpp" line="73"/>
+        <location filename="mainwindow.cpp" line="87"/>
+        <location filename="mainwindow.cpp" line="101"/>
+        <location filename="mainwindow.cpp" line="268"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="245"/>
+        <location filename="mainwindow.cpp" line="73"/>
+        <source>You have no right to edit platforms!</source>
+        <translation>Недостаточно прав для редактирования площадок!</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="87"/>
+        <source>You have no right to edit users!</source>
+        <translation>Недостаточно прав для редактирования пользователей!</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="101"/>
+        <source>You have no right to edit services!</source>
+        <translation>Недостаточно прав для редактирования услуг!</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="268"/>
         <source>You can&apos;t work at dinner time!</source>
         <translation>Нельзя работать в обеденное время!</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="247"/>
+        <location filename="mainwindow.cpp" line="270"/>
         <source>Confirm</source>
         <translation>Подтверждение</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="247"/>
+        <location filename="mainwindow.cpp" line="270"/>
         <source>Are you really want to insert another work in this cell?</source>
         <translation>Добавить другую работу в эту ячейку?</translation>
     </message>
 </context>
 <context>
     <name>authorization</name>
-    <message>
-        <location filename="authorization.ui" line="14"/>
-        <source>Dialog</source>
+    <message utf8="true">
+        <location filename="authorization.ui" line="26"/>
+        <source>Авторизация</source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
-        <location filename="authorization.ui" line="31"/>
+        <location filename="authorization.ui" line="43"/>
         <source>Логин</source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
-        <location filename="authorization.ui" line="67"/>
+        <location filename="authorization.ui" line="79"/>
         <source>Пароль</source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
-        <location filename="authorization.ui" line="107"/>
+        <location filename="authorization.ui" line="106"/>
         <source>Настройки</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="authorization.ui" line="127"/>
+        <location filename="authorization.ui" line="126"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
-        <location filename="authorization.ui" line="137"/>
+        <location filename="authorization.ui" line="136"/>
         <source>Отмена</source>
         <translation type="unfinished"></translation>
     </message>
@@ -499,36 +517,44 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="users.cpp" line="53"/>
+        <location filename="users.cpp" line="54"/>
         <source>Message</source>
         <translation>Сообщение</translation>
     </message>
     <message>
-        <location filename="users.cpp" line="53"/>
+        <location filename="users.cpp" line="54"/>
         <source>Please, save your changes first.</source>
         <translation>Пожалуйста, сначала сохраниете изменения.</translation>
     </message>
     <message>
-        <location filename="users.cpp" line="79"/>
-        <location filename="users.cpp" line="91"/>
+        <location filename="users.cpp" line="84"/>
+        <location filename="users.cpp" line="89"/>
+        <location filename="users.cpp" line="102"/>
+        <location filename="users.cpp" line="105"/>
+        <location filename="users.cpp" line="128"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="users.cpp" line="79"/>
-        <location filename="users.cpp" line="91"/>
+        <location filename="users.cpp" line="89"/>
+        <location filename="users.cpp" line="105"/>
         <source>All fields must be filled in.</source>
         <translation>Все поля должны быть заполнены.</translation>
     </message>
     <message>
-        <location filename="users.cpp" line="105"/>
+        <location filename="users.cpp" line="119"/>
         <source>Are you sure?</source>
         <translation>Вы уверены?</translation>
     </message>
     <message>
-        <location filename="users.cpp" line="105"/>
+        <location filename="users.cpp" line="119"/>
         <source>Really delete?</source>
         <translation>Действительно удалить?</translation>
+    </message>
+    <message>
+        <location filename="users.cpp" line="128"/>
+        <source>You can&apos;t remove yourself.</source>
+        <translation>Нельзя удалять себя.</translation>
     </message>
 </context>
 </TS>
