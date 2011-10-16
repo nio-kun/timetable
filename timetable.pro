@@ -9,6 +9,7 @@ QT       += core gui sql
 TARGET = timetable
 TEMPLATE = app
 
+TRANSLATIONS += timetable_ru.ts
 
 SOURCES += main.cpp\
         mainwindow.cpp \

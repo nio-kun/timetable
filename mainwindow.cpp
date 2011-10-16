@@ -62,21 +62,44 @@ void MainWindow::on_action_triggered()
 
 void MainWindow::on_action_3_triggered()
 {
-    places s(&db);
-    s.exec();
-    SetDays(Days);
+    QSqlQuery query;
+    query.exec("select isadmin from users where login='"+db.userName()+"'");
+    query.next();
+    if (query.value(0).toInt()){
+        places s(&db);
+        s.exec();
+        SetDays(Days);
+    }else{
+        QMessageBox::critical(0,tr("Error!"),tr("You have no right to edit platforms!"));
+    }
 }
 
 void MainWindow::on_action_4_triggered()
 {
-    users s(&db);
-    s.exec();
+
+    QSqlQuery query;
+    query.exec("select isadmin from users where login='"+db.userName()+"'");
+    query.next();
+    if (query.value(0).toInt()){
+        users s(&db);
+        s.exec();
+    }else{
+        QMessageBox::critical(0,tr("Error!"),tr("You have no right to edit users!"));
+    }
 }
 
 void MainWindow::on_action_5_triggered()
 {
-    services s(&db);
-    s.exec();
+
+    QSqlQuery query;
+    query.exec("select isadmin from users where login='"+db.userName()+"'");
+    query.next();
+    if (query.value(0).toInt()){
+        services s(&db);
+        s.exec();
+    }else{
+        QMessageBox::critical(0,tr("Error!"),tr("You have no right to edit services!"));
+    }
 }
 
 
@@ -84,7 +107,6 @@ void MainWindow::on_action_6_triggered()
 {
     authorization *s = new authorization;
     s->show();
-//ui->tableView->model()->setItemData()
 }
 
 void MainWindow::on_ttable_doubleClicked(QModelIndex index)
@@ -127,6 +149,8 @@ void MainWindow::SetDays(int DaysCount){
     ClearTTable(); //Очищаем таблицу
     QStringList lblsV; //Массив заголовков
     int placesCount;  //Число площадок
+
+    ui->ttable->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 
   if (db.isOpen()){
       QSqlQuery query, q, subq, subq2;
@@ -175,14 +199,14 @@ void MainWindow::SetDays(int DaysCount){
                       QTableWidgetItem *newItem1 = new QTableWidgetItem("");
                       newItem1->setBackgroundColor(dinner_color);
                       newItem1->setStatusTip("dt");
-                      newItem1->setToolTip("Dinner");
+                      newItem1->setToolTip(tr("Dinner"));
                       ui->ttable->setItem(i-8,j, newItem1);
                   }
               }
           }
       }
 
-      //Добавим данные
+      //Добавим заголовки занятых часов.
        int jj=0;
       for (int k=0;k<DaysCount;k++){
           query.first();
@@ -205,6 +229,11 @@ void MainWindow::SetDays(int DaysCount){
                   newItem->setStatusTip(q.value(4).toString());
                   ui->ttable->setItem(row,jj, newItem);
 
+                  //Добавим строчки занятых часов
+                      ui->ttable->insertRow(row+1);
+                      ui->ttable->setSpan(row+1, 0+(ui->ttable->columnCount()/DaysCount)*k,1,placesCount);
+
+
                   //Заливаем фоном занятое время
                   int addcell=0;
                   for (int m=1;m<q.value(3).toInt();m++){
@@ -221,6 +250,9 @@ void MainWindow::SetDays(int DaysCount){
           }
           while (query.next());
       }
+      jj=0;
+
+
   }
   ui->ttable->setHorizontalHeaderLabels(lblsV);
 
@@ -230,7 +262,6 @@ void MainWindow::SetDays(int DaysCount){
       QString cday=day.addDays(k).toString("dd.MM.yyyy dddd");
       SPANCOLS2(cday, 0+(ui->ttable->columnCount()/DaysCount)*k,(ui->ttable->columnCount()/DaysCount)-1+(placesCount*k));
   }
-  ui->ttable->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 }
 
 
@@ -242,9 +273,9 @@ void MainWindow::on_ttable_cellDoubleClicked(int row, int column)
 
         //Проверяем, не обеденное ли это время
         if (ui->ttable->item(row, column)->statusTip()=="dt") {
-            QMessageBox::critical(0,"Error!","You can't work at dinner time!");
+            QMessageBox::critical(0,tr("Error!"),tr("You can't work at dinner time!"));
         } else {
-        if(QMessageBox::question(0,"Confirm","Are you really want to insert another work in this cell?",3,4,0)==3){
+        if(QMessageBox::question(0,tr("Confirm"),tr("Are you really want to insert another work in this cell?"),3,4,0)==3){
             //Узнаём, на сколько часов нужно сократить работу
             QSqlQuery q;
             q.exec("select hours, date from ttable where record_id="+ui->ttable->item(row,column)->statusTip()); q.first();

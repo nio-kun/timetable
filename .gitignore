@@ -1,5 +1,12 @@
+*.[oa]
+*~
+timetable
+*.dll
+*.exe
+*.obj
 *.o
 ui_*.h
 moc_*.cpp
-timetable
-.gitignore
+Makefile*
+Makefile
+*.pro.user

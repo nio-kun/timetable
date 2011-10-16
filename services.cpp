@@ -86,7 +86,7 @@ void services::on_pushButton_2_clicked()
     QSqlQuery query;
     QString str;
     bool ok;
-    str = QInputDialog::getText(0,"","Введите название услуги",QLineEdit::Normal,"",&ok);
+    str = QInputDialog::getText(0,"",tr("Enter service name"),QLineEdit::Normal,"",&ok);
     if (ok){
         if (str.length()>0){
             query.prepare("insert into services (name) values (:name)");
@@ -103,7 +103,7 @@ void services::on_pushButton_2_clicked()
 
         }
         else{
-            QMessageBox::critical(0,"Ошибка","Название услуги не может быть пустым",0,0,0);
+            QMessageBox::critical(0,tr("Error!"),tr("Service name can't be empty"),0,0,0);
         }
     }
 }
@@ -112,12 +112,12 @@ void services::on_pushButton_3_clicked()
 {
     if (ui->listWidget->currentRow()>-1){
         QSqlQuery query;
-        if (QMessageBox::question(0,"Удаление услуги","Удалить услугу \""+ui->listWidget->currentItem()->text()+"\"?",3,4,0)==3){
+        if (QMessageBox::question(0,tr("Service removal"),tr("Do you want to remove service")+" \""+ui->listWidget->currentItem()->text()+"\"?",3,4,0)==3){
             query.exec("delete from services where service_id="+QString::number(listvector.at(ui->listWidget->currentRow())));
             listvector.remove(ui->listWidget->currentRow());
             delete ui->listWidget->takeItem(ui->listWidget->currentRow());
         }
     }else{
-        QMessageBox::information(0,"Удаление невозможно","Выберите услугу для удаления",0,0,0);
+        QMessageBox::critical(0,tr("Removal error"),tr("Select service to remove"),0,0,0);
     }
 }

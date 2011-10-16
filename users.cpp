@@ -1,6 +1,7 @@
 #include "users.h"
 #include "ui_users.h"
 #include <QMessageBox>
+#include <QSqlError>
 
 users::users(QWidget *parent) :
     QDialog(parent),
@@ -17,7 +18,7 @@ users::users(QSqlDatabase *kept_db, QWidget *parent) : QDialog(parent),
     db=kept_db;
     if (db->isOpen()){
         QSqlQuery query;
-        query.exec("select user_id, login, fio from users where login!='root' order by fio");
+        query.exec("select user_id, login, fio from users where login!='root' order by login");
         while (query.next()){
             ui->listWidget->addItem(query.value(1).toString());
             listvector.append(query.value(0).toInt());
@@ -45,12 +46,12 @@ void users::on_listWidget_currentRowChanged(int currentRow)
 void users::on_pushButton_3_clicked()
 {
     if (saved) {
-    //Добавление пользователя
-    adduser= true;
-    ui->lineEdit_3->setText("Фамилия Имя Отчество");
-    ui->lineEdit->setText("login");
+        //Добавление пользователя
+        adduser= true;
+        ui->lineEdit_3->setText("Фамилия Имя Отчество");
+        ui->lineEdit->setText("login");
     } else {
-    QMessageBox::information(0,"Message","Please, save your changes first.");
+        QMessageBox::information(0,tr("Message"),tr("Please, save your changes first."));
     };
  }
 
@@ -58,39 +59,52 @@ void users::on_pushButton_clicked()
 {
     QSqlQuery query;
     QString fio, login, password;
+    int isadmin=0;
     fio=ui->lineEdit_3->text();
     login=ui->lineEdit->text();
     password=ui->lineEdit_2->text();
+    if (ui->checkBox->checkState()){
+        isadmin=1;
+    }
 
     if(adduser){
         //Добавляем нового пользователя
        if (fio.length()>0&&login.length()>0&&password.length()>0){
-        query.exec("insert into users (login, fio) values ('"+login+"', '"+fio+"')");
-        query.exec("Grant ALL on *.* to '"+login+"' identified by '"+password+"';");
-        query.exec("select max(user_id) from users");
-        query.next();
+//        query.exec("insert into users (login, fio) values ('"+login+"', '"+fio+"')");
+//        query.exec("Grant ALL on *.* to '"+login+"' identified by '"+password+"';");
 
-        ui->listWidget->addItem(login);
-        listvector.append(query.value(0).toInt());
-        ui->listWidget->setCurrentRow(ui->listWidget->count()-1);
+            if (query.exec("CALL adduser('"+login+"','"+password+"', '"+fio+"', '"+QString::number(isadmin)+"');")){
+                query.exec("select max(user_id) from users");
+                query.next();
 
-    }
-    else{
-        QMessageBox::critical(0, tr("Error!"), tr("All fields must be filled in."),0,0,0);
-    }
+                ui->listWidget->addItem(login);
+                listvector.append(query.value(0).toInt());
+                ui->listWidget->setCurrentRow(ui->listWidget->count()-1);
+            }else{
+                QMessageBox::critical(0,tr("Error!"),query.lastError().text());
+            }
+
+
+        }else{
+            QMessageBox::critical(0, tr("Error!"), tr("All fields must be filled in."),0,0,0);
+        }
        adduser=false;
- }else {
-//Сохраняем пользователя
-        if (fio.length()>0&&login.length()>0&&password.length()>0){
-         query.exec("update users set login='"+login+"', fio='"+fio+"' where user_id="+QString::number(listvector.at(ui->listWidget->currentRow()))+";");
-         query.exec("DROP USER '"+ui->listWidget->currentItem()->text() +"';");
-         query.exec("Grant ALL on *.* to '"+login+"' identified by '"+password+"';");
-         ui->listWidget->currentItem()->setText(login);
-     }
-     else{
-         QMessageBox::critical(0, tr("Error!"), tr("All fields must be filled in."),0,0,0);
-     }
-  }
+    }else {
+        //Сохраняем пользователя
+        if (fio.length()>0&&login.length()>0){
+            if (query.exec("CALL updateuser('"+ui->listWidget->currentItem()->text()+"', '"+login+"','"+password+"', '"+fio+"', '"+QString::number(isadmin)+"');")){
+
+                //query.exec("update users set login='"+login+"', fio='"+fio+"', isadmin="+QString::number(isadmin)+" where user_id="+QString::number(listvector.at(ui->listWidget->currentRow()))+";");
+                //query.exec("DROP USER '"+ui->listWidget->currentItem()->text() +"';");
+                //query.exec("Grant ALL on *.* to '"+login+"' identified by '"+password+"';");
+                ui->listWidget->currentItem()->setText(login);
+            }else{
+                QMessageBox::critical(0,tr("Error!"),query.lastError().text());
+            }
+        }else{
+            QMessageBox::critical(0, tr("Error!"), tr("All fields must be filled in."),0,0,0);
+        }
+    }
     saved= true;
     db->commit();
     db->transaction();
@@ -102,13 +116,17 @@ void users::on_pushButton_2_clicked()
     int currow =ui->listWidget->currentRow();
 
     //Удаление пользователя
-    if (QMessageBox::question(0,"Are you sure?","Really delete?",QMessageBox::Yes,QMessageBox::No)==QMessageBox::Yes)
+    if (QMessageBox::question(0,tr("Are you sure?"),tr("Really delete?"),QMessageBox::Yes,QMessageBox::No)==QMessageBox::Yes)
     {
-        QString login=ui->lineEdit->text();
-        query.exec("delete from users where user_id="+QString::number(listvector.at(ui->listWidget->currentRow())));
-        query.exec("DROP USER '"+login+"';");
-        ui->listWidget->takeItem(ui->listWidget->row(ui->listWidget->currentItem()));
-        ui->listWidget->setCurrentRow(currow);
+        QString login=ui->listWidget->currentItem()->text();
+        if (login!=db->userName()){
+            query.exec("delete from users where user_id="+QString::number(listvector.at(ui->listWidget->currentRow())));
+            query.exec("DROP USER '"+login+"';");
+            delete ui->listWidget->takeItem(ui->listWidget->row(ui->listWidget->currentItem()));
+            ui->listWidget->setCurrentRow(currow);
+        }else{
+            QMessageBox::critical(0, tr("Error!"), tr("You can't remove yourself."),0,0,0);
+        }
     };
 
 }
