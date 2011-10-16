@@ -158,7 +158,7 @@ void order_details::on_buttonBox_accepted()
 
                 if (q2.value(0).toDate()<ui->dateEdit->date()){
                     rsplace=q.value(0).toInt();
-                    q.exec("insert into ttable (place_id, client_id, service_id, date, hours) values ("+QString("%1").arg(rsplace)+", "+newid.toString()+", "+serv_id.toString()+", '"+
+                    q.exec("insert into ttable (place_id, client_id, service_id, date, hours) values ("+QString("%1").arg(rsplace)+", "+newid.toString()+", 1, '"+
                            ui->dateEdit->date().toString("yyyy-MM-dd")+" "+ui->lineEdit_5->text()+":00:00"+"', 1)");
                     flag = true;
                     break;
@@ -168,7 +168,7 @@ void order_details::on_buttonBox_accepted()
                     q2.next();
                     if (q2.value(0).toDate()==ui->dateEdit->date() && q2.value(0).toDateTime().toString("hh").toInt()+q2.value(1).toInt() <=ui->lineEdit_5->text().toInt()){
                         rsplace=q.value(0).toInt();
-                        q.exec("insert into ttable (place_id, client_id, service_id, date, hours) values ("+QString("%1").arg(rsplace)+", "+newid.toString()+", "+serv_id.toString()+", '"+
+                        q.exec("insert into ttable (place_id, client_id, service_id, date, hours) values ("+QString("%1").arg(rsplace)+", "+newid.toString()+", 1, '"+
                                ui->dateEdit->date().toString("yyyy-MM-dd")+" "+ui->lineEdit_5->text()+":00:00"+"', 1)");
                         flag = true;
                         break;
@@ -176,7 +176,7 @@ void order_details::on_buttonBox_accepted()
                 }
             }else{
                 rsplace=q.value(0).toInt();
-                q.exec("insert into ttable (place_id, client_id, service_id, date, hours) values ("+QString("%1").arg(rsplace)+", "+newid.toString()+", "+serv_id.toString()+", '"+
+                q.exec("insert into ttable (place_id, client_id, service_id, date, hours) values ("+QString("%1").arg(rsplace)+", "+newid.toString()+", 1, '"+
                        ui->dateEdit->date().toString("yyyy-MM-dd")+" "+ui->lineEdit_5->text()+":00:00"+"', 1)");
                 flag = true;
                 break;
