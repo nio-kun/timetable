@@ -268,132 +268,22 @@ void MainWindow::SetDays(int DaysCount){
                       newItem->setToolTip(ttip);
                       newItem->setStatusTip(query.value(5).toString());
                       ui->ttable->setItem(ui->ttable->rowCount()-1,col, newItem);
-
                   };
 
               };
           };
           };
-          //Объединяем горизонтальные заголовки
+          //Объединяем горизонтальные заголовки в часы
          if (addedRows>0) SPANCOLS3 (QString("%1:00").arg(hr),beginRow,beginRow+addedRows);
       };
       ui->ttable->setVerticalHeaderLabels(lblsH);
 
+      //  [===========]\
+      //  |^^^водка^^^||""\\_,_
+      //  |___________||___|__|)     <-----Это грузовик с водкой
+      //   (@)(@)""""(@)(@)**(@)
 
-
-
-
-      //Добавим заголовки занятых часов.
-   /*    int jj=0;
-      for (int k=0;k<DaysCount;k++){
-          query.first();
-          do {
-              q.exec("select TIME(date), client_id, service_id, hours, record_id from ttable where place_id="+query.value(0).toString()+" and DATE(date)='"+day.addDays(k).toString("yyyy-MM-dd")+"' order by date");
-              if (q.size()>0){
-              q.first();
-              addedRows = 0;
-              do {
-                  int row= q.value(0).toString().left(2).toInt()-8;
-                  QColor colr(query.value(2).toString());
-                  //Вписываем данные
-                  //Сначала считываем их из таблицы
-
-                  //QTableWidgetItem *newItem = new QTableWidgetItem(subq.value(1).toString());
-
-                  //Добавим дополнительную строчку
-                  ui->ttable->insertRow(row+1);
-                  for (int ds=0; ds<DaysCount; ds++)
-                  ui->ttable->setSpan(row+1, 0+(ui->ttable->columnCount()/DaysCount)*ds,1,placesCount);
-
-
-                  QTableWidgetItem * nitm = new QTableWidgetItem (q.value(0).toString()+" "+subq.value(1).toString()+" "+subq2.value(1).toString()+" "+subq.value(3).toString()+" "+subq.value(2).toString());
-                  nitm->setBackgroundColor("#ffffff");
-                  nitm->setStatusTip("ac");
-                  ui->ttable->setItem(row+1, jj, nitm);
-                  addedRows++;
-
-
-                  //Заливаем фоном занятое время
-                  int addcell=0;
-                  for (int m=1;m<q.value(3).toInt();m++){
-                      if (ui->ttable->item(row+m+1,jj)&&(ui->ttable->item(row+m+1,jj)->statusTip()=="dt")) addcell=1;
-                  QTableWidgetItem *bg = new QTableWidgetItem();
-                  bg->setBackgroundColor(colr);
-                  bg->setToolTip(ttip);
-                  bg->setStatusTip(q.value(4).toString());
-                  ui->ttable->setItem(row+m+addcell+1,jj, bg);
-                  }
-                  //    SPANCOLS3 ("122",row,row+1);
-              } while (q.next());
-              };
-              jj++;
-          }
-          while (query.next());
-      }
-      jj=0;
-
-
-//  [===========]\
-//  |^^^водка^^^||""\\_,_
-//  |___________||___|__|)     <-----Это грузовик с водкой
-//   (@)(@)""""(@)(@)**(@)
-
-
-
-                    for (int ds=0; ds<DaysCount; ds++) {
-                    ui->ttable->setSpan(h+1, 0+(ui->ttable->columnCount()/DaysCount)*ds,1,placesCount);
-                    QTableWidgetItem * nitm = new QTableWidgetItem ("");
-                    nitm->setBackgroundColor("#ffffff");
-                    nitm->setStatusTip("eac");
-                    ui->ttable->setItem(h+1, 0+(ui->ttable->columnCount()/DaysCount)*ds, nitm);
-                    };
-
-                    QTableWidgetItem * nitm = new QTableWidgetItem (QString("%1").arg(h));
-                    ui->ttable->setItem(h+1,j, nitm);
-
-                    addedRows++;
-
-                }
-              /* if (ui->ttable->item(h+addedRows-work_start_time,0+(ui->ttable->columnCount()/DaysCount)*k)
-                        && ui->ttable->item(h+addedRows-work_start_time,0+(ui->ttable->columnCount()/DaysCount)*k)->statusTip()=="eac"){
-                };
-
-            };
-        };
-
-        /*
-
-      if ( ui->ttable->item(row+1,0+(ui->ttable->columnCount()/DaysCount)*k)
-           && ui->ttable->item(row+1,0+(ui->ttable->columnCount()/DaysCount)*k)->statusTip()=="eac") {
-         ui->ttable->item(row+1,0+(ui->ttable->columnCount()/DaysCount)*k)->setText(subq.value(1).toString()+" "+subq2.value(1).toString()+" "+subq.value(3).toString()+" "+subq.value(2).toString());
-         ui->ttable->item(row+1,0+(ui->ttable->columnCount()/DaysCount)*k)->setTextColor(query.value(2).toString());
-         ui->ttable->item(row+1,0+(ui->ttable->columnCount()/DaysCount)*k)->setStatusTip("ac");
-
-      } else {
-          //Добавим строчки занятых часов
-              ui->ttable->insertRow(row+addedRows);
-          //Добавим объединение для всех ячеек строки
-              for (int ds=0; ds<DaysCount; ds++) {
-              ui->ttable->setSpan(row+1+addedRows, 0+(ui->ttable->columnCount()/DaysCount)*ds,1,placesCount);
-              QTableWidgetItem * nitm = new QTableWidgetItem ("");
-              nitm->setBackgroundColor("#ffffff");
-              nitm->setStatusTip("eac");
-              ui->ttable->setItem(row+1+addedRows, 0+(ui->ttable->columnCount()/DaysCount)*ds, nitm);
-              };
-      ui->ttable->item(row+1+addedRows,0+(ui->ttable->columnCount()/DaysCount)*k)->setText(subq.value(1).toString()+" "+subq2.value(1).toString()+" "+subq.value(3).toString()+" "+subq.value(2).toString());
-      ui->ttable->item(row+1+addedRows,0+(ui->ttable->columnCount()/DaysCount)*k)->setTextColor(query.value(2).toString());
-      addedRows++;
-      };
-
-    //};
-
-      //////////////////////////////////
-  }
-*/
-
-
-
-  //А теперь объединяем площадки в дни
+ //А теперь объединяем площадки в дни
 
       for (int k=0;k<DaysCount;k++){
           QString cday=day.addDays(k).toString("dd.MM.yyyy dddd");
@@ -408,11 +298,12 @@ void MainWindow::on_ttable_cellDoubleClicked(int row, int column)
 {
     if (ui->ttable->item(row,column)){
        //Ячейка уже занята
-
         //Проверяем, не обеденное ли это время
         if (ui->ttable->item(row, column)->statusTip()=="dt") {
             QMessageBox::critical(0,tr("Error!"),tr("You can't work at dinner time!"));
-        } else {
+        }else if(ui->ttable->item(row, column)->statusTip()=="ac"){
+            ; //В дополнительную строчку работы вставлять нельзя
+        }else {
         if(QMessageBox::question(0,tr("Confirm"),tr("Are you really want to insert another work in this cell?"),3,4,0)==3){
             //Узнаём, на сколько часов нужно сократить работу
             QSqlQuery q;

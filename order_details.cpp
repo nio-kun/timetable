@@ -25,7 +25,6 @@ order_details::order_details(QSqlDatabase *keptdb, int plc, QDateTime dt, QWidge
         q.exec("select name from services order by name");q.first();
         do {ui->comboBox->addItem(q.value(0).toString()); } while (q.next());
     };
-
     ui->dateEdit->setDisabled(true);
     ui->dateEdit->setDate(dt.date());
     ui->lineEdit_5->setDisabled(true);
