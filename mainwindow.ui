@@ -39,7 +39,7 @@
      <x>0</x>
      <y>0</y>
      <width>766</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -62,7 +62,6 @@
      <string>Настройки</string>
     </property>
     <addaction name="action"/>
-    <addaction name="action9"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
@@ -101,11 +100,6 @@
   <action name="action">
    <property name="text">
     <string>Параметры</string>
-   </property>
-  </action>
-  <action name="action9">
-   <property name="text">
-    <string>9</string>
    </property>
   </action>
  </widget>

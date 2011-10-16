@@ -41,9 +41,6 @@ private slots:
    void onWeek();
    void on_ttable_cellDoubleClicked(int row, int column);
 
-
-   void on_action9_triggered();
-
 private:
     Ui::MainWindow *ui;
     QSqlDatabase db;
