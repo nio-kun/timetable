@@ -25,6 +25,10 @@ order_details::order_details(QSqlDatabase *keptdb, int plc, QDateTime dt, QWidge
         q.exec("select name from services order by name");q.first();
         do {ui->comboBox->addItem(q.value(0).toString()); } while (q.next());
     };
+
+    ui->dateEdit->setDisabled(true);
+    ui->dateEdit->setDate(dt.date());
+    ui->lineEdit_5->setDisabled(true);
 };
 
 
@@ -138,21 +142,57 @@ void order_details::on_buttonBox_accepted()
         }
         
         
-            if (ui->checkBox->checkState()){
+        if (ui->checkBox->checkState()){
         //Если отмечено, записываем клиента на развал-схождение
         //Сначала вычисляем время окончания работ
-        QDateTime endtime= destdate.addSecs(ui->lineEdit_4->text().toInt()*3600);
+        //QDateTime endtime= destdate.addSecs(ui->lineEdit_4->text().toInt()*3600);
 
         //Узнаём, какая площадка делает развал-схождение
-        q.exec("select place_id from places where rs=1"); q.first();
-        int rsplace=q.value(0).toInt();
+        q.exec("select place_id from places where rs=1");
+        int rsplace=0;//=q.value(0).toInt();
+        bool flag = false;
+        while (q.next()){
+            QSqlQuery q2;
+            q2.exec("select max(date) from ttable where place_id="+q.value(0).toString()+" and date <= '"+ui->dateEdit->date().toString("yyyy-MM-dd")+" "+ui->lineEdit_5->text()+":00:00"+"';");
+            if (q2.numRowsAffected()){
+                q2.next();
+
+                if (q2.value(0).toDate()<ui->dateEdit->date()){
+                    rsplace=q.value(0).toInt();
+                    q.exec("insert into ttable (place_id, client_id, service_id, date, hours) values ("+QString("%1").arg(rsplace)+", "+newid.toString()+", "+serv_id.toString()+", '"+
+                           ui->dateEdit->date().toString("yyyy-MM-dd")+" "+ui->lineEdit_5->text()+":00:00"+"', 1)");
+                    flag = true;
+                    break;
+                }else{
+
+                    q2.exec("select date, hours from ttable where place_id="+q.value(0).toString()+" and date = '"+q2.value(0).toString()+"';");
+                    q2.next();
+                    if (q2.value(0).toDate()==ui->dateEdit->date() && q2.value(0).toDateTime().toString("hh").toInt()+q2.value(1).toInt() <=ui->lineEdit_5->text().toInt()){
+                        rsplace=q.value(0).toInt();
+                        q.exec("insert into ttable (place_id, client_id, service_id, date, hours) values ("+QString("%1").arg(rsplace)+", "+newid.toString()+", "+serv_id.toString()+", '"+
+                               ui->dateEdit->date().toString("yyyy-MM-dd")+" "+ui->lineEdit_5->text()+":00:00"+"', 1)");
+                        flag = true;
+                        break;
+                    }
+                }
+            }else{
+                rsplace=q.value(0).toInt();
+                q.exec("insert into ttable (place_id, client_id, service_id, date, hours) values ("+QString("%1").arg(rsplace)+", "+newid.toString()+", "+serv_id.toString()+", '"+
+                       ui->dateEdit->date().toString("yyyy-MM-dd")+" "+ui->lineEdit_5->text()+":00:00"+"', 1)");
+                flag = true;
+                break;
+            }
+        }
+        if (!flag){
+            QMessageBox::critical(0, tr("Error!"), tr("All incine platforms are busy at selected time") ,0,0,0); //по-английски предложение написано неправильно
+        }
 
         //Находим, когда она освободится
         //Находим ближайшую работу
-        q.exec("select MAX(record_id), date, hours from ttable where place_id="+QString("%1").arg(rsplace)+" and date < '"+endtime.toString("yyyy-MM-dd hh:mm:ss")+"';");
-        q.first();
+//        q.exec("select MAX(record_id), date, hours from ttable where place_id="+QString("%1").arg(rsplace)+" and date < '"+endtime.toString("yyyy-MM-dd hh:mm:ss")+"';");
+//        q.first();
         //Находим время её окончания
-        QDateTime et = q.value(1).toDateTime().addSecs(3600*q.value(2).toInt());
+//        QDateTime et = q.value(1).toDateTime().addSecs(3600*q.value(2).toInt());
 /*
 
         q.exec("insert into ttable (place_id, client_id, service_id, date, hours) values ("+QString("%1").arg(rsplace)+", "+newid.toString()+", "+serv_id.toString()+", '"+
@@ -165,4 +205,39 @@ void order_details::on_buttonBox_accepted()
 }else{
     QMessageBox::critical(0, tr("Error!"), tr("All fields must be filled in."),0,0,0);
     };
+}
+
+void order_details::on_checkBox_stateChanged(int arg1)
+{
+    if (arg1){
+        ui->dateEdit->setDisabled(false);
+        ui->lineEdit_5->setDisabled(false);
+    }else{
+        ui->dateEdit->setDisabled(true);
+        ui->lineEdit_5->setDisabled(true);
+    }
+}
+
+void order_details::on_lineEdit_5_editingFinished()
+{
+    int dinner_start_time=0;
+    int dinner_end_time=0;
+    QSqlQuery query;
+    query.exec("select value from settings where name='dinner_start_time'");
+    if (query.numRowsAffected()>0){
+        query.next();
+        dinner_start_time=query.value(0).toInt();
+    }
+
+    query.exec("select value from settings where name='dinner_end_time'");
+    if (query.numRowsAffected()>0){
+        query.next();
+        dinner_end_time=query.value(0).toInt();
+    }
+
+    if (dinner_start_time && dinner_end_time && dinner_start_time<=ui->lineEdit_5->text().toInt() && dinner_end_time> ui->lineEdit_5->text().toInt()){
+        QMessageBox::critical(0,tr("Error!"),tr("You can't work at dinner time!"));
+        ui->lineEdit_5->setFocus();
+    }
+
 }

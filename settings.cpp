@@ -69,7 +69,7 @@ void settings::on_pushButton_clicked()
 
 
     if (ui->lineEdit_3->text().toInt() > ui->lineEdit_4->text().toInt()){
-        QMessageBox::information(0, tr("Error!"),tr("Dinner initiation time cant be greater than dinner finalization time"), 0,0,0);
+        QMessageBox::information(0, tr("Error!"),tr("Dinner initiation time can't be greater than dinner finalization time"), 0,0,0);
         ui->lineEdit_3->setFocus();
         return;
     }
