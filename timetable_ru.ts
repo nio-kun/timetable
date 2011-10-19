@@ -82,7 +82,7 @@
         <location filename="mainwindow.cpp" line="73"/>
         <location filename="mainwindow.cpp" line="87"/>
         <location filename="mainwindow.cpp" line="101"/>
-        <location filename="mainwindow.cpp" line="268"/>
+        <location filename="mainwindow.cpp" line="276"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
@@ -102,17 +102,22 @@
         <translation>Недостаточно прав для редактирования услуг!</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="268"/>
+        <location filename="mainwindow.cpp" line="202"/>
+        <source>Dinner</source>
+        <translation type="unfinished">Обед</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="276"/>
         <source>You can&apos;t work at dinner time!</source>
         <translation>Нельзя работать в обеденное время!</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="270"/>
+        <location filename="mainwindow.cpp" line="278"/>
         <source>Confirm</source>
         <translation>Подтверждение</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="270"/>
+        <location filename="mainwindow.cpp" line="278"/>
         <source>Are you really want to insert another work in this cell?</source>
         <translation>Добавить другую работу в эту ячейку?</translation>
     </message>
@@ -210,22 +215,39 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="order_details.cpp" line="50"/>
-        <location filename="order_details.cpp" line="55"/>
-        <location filename="order_details.cpp" line="62"/>
-        <location filename="order_details.cpp" line="68"/>
-        <location filename="order_details.cpp" line="94"/>
-        <location filename="order_details.cpp" line="100"/>
-        <location filename="order_details.cpp" line="112"/>
-        <location filename="order_details.cpp" line="133"/>
-        <location filename="order_details.cpp" line="166"/>
+        <location filename="order_details.ui" line="153"/>
+        <source>:00</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="order_details.cpp" line="54"/>
+        <location filename="order_details.cpp" line="59"/>
+        <location filename="order_details.cpp" line="66"/>
+        <location filename="order_details.cpp" line="72"/>
+        <location filename="order_details.cpp" line="98"/>
+        <location filename="order_details.cpp" line="104"/>
+        <location filename="order_details.cpp" line="116"/>
+        <location filename="order_details.cpp" line="137"/>
+        <location filename="order_details.cpp" line="187"/>
+        <location filename="order_details.cpp" line="206"/>
+        <location filename="order_details.cpp" line="239"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="order_details.cpp" line="166"/>
+        <location filename="order_details.cpp" line="187"/>
+        <source>All incine platforms are busy at selected time</source>
+        <translation>Все площадки заняты в указанное время</translation>
+    </message>
+    <message>
+        <location filename="order_details.cpp" line="206"/>
         <source>All fields must be filled in.</source>
         <translation>Все поля должны быть заполнены.</translation>
+    </message>
+    <message>
+        <location filename="order_details.cpp" line="239"/>
+        <source>You can&apos;t work at dinner time!</source>
+        <translation>Нельзя работать в обеденное время!</translation>
     </message>
 </context>
 <context>
@@ -465,8 +487,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="settings.cpp" line="72"/>
-        <source>Dinner initiation time cant be greater than dinner finalization time</source>
+        <source>Dinner initiation time can&apos;t be greater than dinner finalization time</source>
         <translation>Время начала обеда не может быть больше времени окончания</translation>
+    </message>
+    <message>
+        <source>Dinner initiation time cant be greater than dinner finalization time</source>
+        <translation type="obsolete">Время начала обеда не может быть больше времени окончания</translation>
     </message>
     <message>
         <location filename="settings.cpp" line="120"/>

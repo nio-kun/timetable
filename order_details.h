@@ -23,6 +23,10 @@ public:
 private slots:
     void on_buttonBox_accepted();
 
+    void on_checkBox_stateChanged(int arg1);
+
+    void on_lineEdit_5_editingFinished();
+
 private:
     Ui::order_details *ui;
     QSqlDatabase *db;
