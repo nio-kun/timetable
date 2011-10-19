@@ -21,6 +21,11 @@
    qDebug()<<QString("Failure for %1,%2").arg(start).arg(stop);
 
 
+#define SPANCOLS3(txt,start,stop) \
+ if (!hv->spanCols(QString(txt),start,stop))\
+   qDebug()<<QString("Failure for %1,%2").arg(start).arg(stop);
+
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -30,17 +35,18 @@ MainWindow::MainWindow(QWidget *parent) :
     //Строим панели инструментов
       MakeToolbars();
       day = QDate::currentDate();
+      dinner_color.setNamedColor("#00FF00");
 
-    dinner_color.setNamedColor("#00FF00");
-
-    //Подключение к БД и авторизация
+      //Подключение к БД и авторизация
     db = QSqlDatabase::addDatabase("QMYSQL");
     db.setDatabaseName("timetable");
     authorization a(&db,&dinner_color);
     a.exec();
     QTableWidget *tw = ui->ttable;
      h = new HMultiHeader(tw, Qt::Horizontal);
+     hv = new HMultiHeader (tw,Qt::Vertical);
     tw->setHorizontalHeader(h);
+    tw->setVerticalHeader(hv);
     onOneDay();
 }
 
@@ -131,12 +137,12 @@ void MainWindow::ClearTTable(){
         for (int i=0;i=ui->ttable->columnCount();i++) ui->ttable->removeColumn(0);
         for (int i=0;i=ui->ttable->rowCount();i++) ui->ttable->removeRow(0);
         //Строки
-        QStringList lblsH;
+      /*  QStringList lblsH;
         for (int i=8;i<20;i++){
             lblsH.append(QString("%1:00").arg(i));
             ui->ttable->insertRow(i-8);
         }
-        ui->ttable->setVerticalHeaderLabels(lblsH);
+        ui->ttable->setVerticalHeaderLabels(lblsH);*/
 }
 
 void MainWindow::onOneDay(){Days=1; SetDays(1);}
@@ -149,8 +155,6 @@ void MainWindow::SetDays(int DaysCount){
     ClearTTable(); //Очищаем таблицу
     QStringList lblsV; //Массив заголовков
     int placesCount;  //Число площадок
-
-    ui->ttable->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 
   if (db.isOpen()){
       QSqlQuery query, q, subq, subq2;
@@ -179,6 +183,9 @@ void MainWindow::SetDays(int DaysCount){
       int dinner_start_time=0;
       int dinner_end_time=0;
 
+
+      //Ставим обеденное время
+
       if (db.isOpen()){
           QSqlQuery query;
           query.exec("select value from settings where name='dinner_start_time'");
@@ -206,6 +213,24 @@ void MainWindow::SetDays(int DaysCount){
           }
       }
 
+      //Добавим строки часов
+      //Узнаём рабочее время
+      QSqlQuery q2;
+      q2.exec("select value from settings where name='work_start_time'"); q2.first();
+      int work_start_time=q2.value(0).toInt();
+      q2.exec("select value from settings where name='work_end_time'"); q2.first();
+      int work_end_time=q2.value(0).toInt();
+      int hr;
+
+      for (hr=work_start_time; hr<=work_end_time; hr++) {
+          int a=1;
+          ui->ttable->insertRow(ui->ttable->rowCount());
+
+
+
+      }
+
+
       //Добавим заголовки занятых часов.
        int jj=0;
       for (int k=0;k<DaysCount;k++){
@@ -221,18 +246,14 @@ void MainWindow::SetDays(int DaysCount){
                   //Сначала считываем их из таблицы
                   subq.exec("select * from clients where client_id="+q.value(1).toString()+";"); subq.first();
                   subq2.exec("select * from services where service_id="+q.value(2).toString()+";"); subq2.first();
-                  QTableWidgetItem *newItem = new QTableWidgetItem(subq.value(1).toString());
-                  if (DaysCount==1) newItem->setText(subq.value(1).toString()+" "+subq2.value(1).toString());
+                  //QTableWidgetItem *newItem = new QTableWidgetItem(subq.value(1).toString());
+                  QTableWidgetItem *newItem = new QTableWidgetItem();
+                  //if (DaysCount==1) newItem->setText(subq.value(1).toString()+" "+subq2.value(1).toString());
                   newItem->setBackgroundColor(colr);
                   QString ttip = subq.value(1).toString()+"\n"+subq2.value(1).toString()+"\n"+subq.value(3).toString()+"\n"+subq.value(2).toString();
                   newItem->setToolTip(ttip);
                   newItem->setStatusTip(q.value(4).toString());
                   ui->ttable->setItem(row,jj, newItem);
-
-                  //Добавим строчки занятых часов
-                      ui->ttable->insertRow(row+1);
-                      ui->ttable->setSpan(row+1, 0+(ui->ttable->columnCount()/DaysCount)*k,1,placesCount);
-
 
                   //Заливаем фоном занятое время
                   int addcell=0;
@@ -244,6 +265,16 @@ void MainWindow::SetDays(int DaysCount){
                   bg->setStatusTip(q.value(4).toString());
                   ui->ttable->setItem(row+m+addcell,jj, bg);
                   }
+
+                  //Добавим строчки занятых часов
+                      ui->ttable->insertRow(row+1);
+                      ui->ttable->setSpan(row+1, 0+(ui->ttable->columnCount()/DaysCount)*k,1,placesCount);
+                      QTableWidgetItem * nitm = new QTableWidgetItem (subq.value(1).toString()+" "+subq2.value(1).toString()+" "+subq.value(3).toString()+" "+subq.value(2).toString());
+                      nitm->setTextColor(query.value(2).toString());
+                      nitm->setBackgroundColor("#ffffff");
+                      ui->ttable->setItem(row+1, 0+(ui->ttable->columnCount()/DaysCount)*k, nitm);
+                      SPANCOLS3 ("122",row,row+1);
+
               } while (q.next());
               };
               jj++;
@@ -262,6 +293,8 @@ void MainWindow::SetDays(int DaysCount){
       QString cday=day.addDays(k).toString("dd.MM.yyyy dddd");
       SPANCOLS2(cday, 0+(ui->ttable->columnCount()/DaysCount)*k,(ui->ttable->columnCount()/DaysCount)-1+(placesCount*k));
   }
+ui->ttable->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+  //ui->ttable->resizeColumnsToContents();
 }
 
 

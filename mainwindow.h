@@ -46,6 +46,7 @@ private:
     Ui::MainWindow *ui;
     QSqlDatabase db;
     HMultiHeader *h;
+    HMultiHeader *hv;
     QDate day;
     int Days;
     QAction *prevAct;
