@@ -155,6 +155,7 @@ void MainWindow::SetDays(int DaysCount){
     ClearTTable(); //Очищаем таблицу
     QStringList lblsV; //Массив заголовков
     int placesCount;  //Число площадок
+    int addedRows =0; //Число дополнительно вставленных строчек
 
   if (db.isOpen()){
       QSqlQuery query, q, subq, subq2;
@@ -180,12 +181,23 @@ void MainWindow::SetDays(int DaysCount){
           query.first();
       }
 
-      int dinner_start_time=0;
-      int dinner_end_time=0;
+      //Добавим строки часов
+      //Узнаём рабочее время
+      QSqlQuery q2;
+      q2.exec("select value from settings where name='work_start_time'"); q2.first();
+      int work_start_time=q2.value(0).toInt();
+      q2.exec("select value from settings where name='work_end_time'"); q2.first();
+      int work_end_time=q2.value(0).toInt();
+      int hr;
 
+      for (hr=work_start_time; hr<=work_end_time; hr++) {
+          //Добавляем строчку часа
+          ui->ttable->insertRow(ui->ttable->rowCount());
+      }
 
       //Ставим обеденное время
-
+      int dinner_start_time=0;
+      int dinner_end_time=0;
       if (db.isOpen()){
           QSqlQuery query;
           query.exec("select value from settings where name='dinner_start_time'");
@@ -213,24 +225,6 @@ void MainWindow::SetDays(int DaysCount){
           }
       }
 
-      //Добавим строки часов
-      //Узнаём рабочее время
-      QSqlQuery q2;
-      q2.exec("select value from settings where name='work_start_time'"); q2.first();
-      int work_start_time=q2.value(0).toInt();
-      q2.exec("select value from settings where name='work_end_time'"); q2.first();
-      int work_end_time=q2.value(0).toInt();
-      int hr;
-
-      for (hr=work_start_time; hr<=work_end_time; hr++) {
-          int a=1;
-          ui->ttable->insertRow(ui->ttable->rowCount());
-
-
-
-      }
-
-
       //Добавим заголовки занятых часов.
        int jj=0;
       for (int k=0;k<DaysCount;k++){
@@ -240,7 +234,7 @@ void MainWindow::SetDays(int DaysCount){
               if (q.size()>0){
               q.first();
               do {
-                  int row= q.value(0).toString().left(2).toInt()-8;
+                  int row= q.value(0).toString().left(2).toInt()-8+addedRows;
                   QColor colr(query.value(2).toString());
                   //Вписываем данные
                   //Сначала считываем их из таблицы
@@ -266,15 +260,35 @@ void MainWindow::SetDays(int DaysCount){
                   ui->ttable->setItem(row+m+addcell,jj, bg);
                   }
 
-                  //Добавим строчки занятых часов
-                      ui->ttable->insertRow(row+1);
-                      ui->ttable->setSpan(row+1, 0+(ui->ttable->columnCount()/DaysCount)*k,1,placesCount);
-                      QTableWidgetItem * nitm = new QTableWidgetItem (subq.value(1).toString()+" "+subq2.value(1).toString()+" "+subq.value(3).toString()+" "+subq.value(2).toString());
-                      nitm->setTextColor(query.value(2).toString());
-                      nitm->setBackgroundColor("#ffffff");
-                      ui->ttable->setItem(row+1, 0+(ui->ttable->columnCount()/DaysCount)*k, nitm);
-                      SPANCOLS3 ("122",row,row+1);
+// =======================================================================================================================================================
+                  //Проверяем, есть ли пустая строка после строки часа
+                  if ( ui->ttable->item(row+1,0+(ui->ttable->columnCount()/DaysCount)*k) &&
+                       ui->ttable->item(row+1,0+(ui->ttable->columnCount()/DaysCount)*k)->statusTip()=="ac" &&
+                       ui->ttable->item(row+1,0+(ui->ttable->columnCount()/DaysCount)*k)->text().length()==0){
 
+                     ui->ttable->item(row+1,0+(ui->ttable->columnCount()/DaysCount)*k)->setText(subq.value(1).toString()+" "+subq2.value(1).toString()+" "+subq.value(3).toString()+" "+subq.value(2).toString());
+                     ui->ttable->item(row+1,0+(ui->ttable->columnCount()/DaysCount)*k)->setTextColor(query.value(2).toString());
+
+                  } else {
+                      //Добавим строчки занятых часов
+                          ui->ttable->insertRow(row+1);
+                          addedRows++;
+                      //Добавим объединение для всех ячеек строки
+                          for (int ds=0; ds<DaysCount; ds++) {
+                          ui->ttable->setSpan(row+1, 0+(ui->ttable->columnCount()/DaysCount)*ds,1,placesCount);
+                          QTableWidgetItem * nitm = new QTableWidgetItem ("");
+                          nitm->setBackgroundColor("#ffffff");
+                          nitm->setStatusTip("ac");
+                          ui->ttable->setItem(row+1, 0+(ui->ttable->columnCount()/DaysCount)*ds, nitm);
+                          };
+                  ui->ttable->item(row+1,0+(ui->ttable->columnCount()/DaysCount)*k)->setText(subq.value(1).toString()+" "+subq2.value(1).toString()+" "+subq.value(3).toString()+" "+subq.value(2).toString());
+                  ui->ttable->item(row+1,0+(ui->ttable->columnCount()/DaysCount)*k)->setTextColor(query.value(2).toString());
+
+                  };
+//================================================================================================================================================= */
+
+
+                  //    SPANCOLS3 ("122",row,row+1);
               } while (q.next());
               };
               jj++;
@@ -282,6 +296,9 @@ void MainWindow::SetDays(int DaysCount){
           while (query.next());
       }
       jj=0;
+
+      //Добавим дополнительные строки занятых часов
+
 
 
   }
