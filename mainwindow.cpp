@@ -136,13 +136,23 @@ void MainWindow::ClearTTable(){
     //Зачистка
         for (int i=0;i=ui->ttable->columnCount();i++) ui->ttable->removeColumn(0);
         for (int i=0;i=ui->ttable->rowCount();i++) ui->ttable->removeRow(0);
-        //Строки
-      /*  QStringList lblsH;
-        for (int i=8;i<20;i++){
-            lblsH.append(QString("%1:00").arg(i));
-            ui->ttable->insertRow(i-8);
-        }
-        ui->ttable->setVerticalHeaderLabels(lblsH);*/
+
+        //Добавим строки часов
+        //Узнаём рабочее время
+        QSqlQuery q2;
+        q2.exec("select value from settings where name='work_start_time'"); q2.first();
+        int work_start_time=q2.value(0).toInt();
+        q2.exec("select value from settings where name='work_end_time'"); q2.first();
+        int work_end_time=q2.value(0).toInt();
+        int hr;
+
+        QStringList lblsH;
+        for (hr=work_start_time; hr<=work_end_time; hr++) {
+            //Добавляем строчку часа
+            ui->ttable->insertRow(ui->ttable->rowCount());
+            lblsH.append(QString("%1:00").arg(hr));
+        };
+            ui->ttable->setVerticalHeaderLabels(lblsH);
 }
 
 void MainWindow::onOneDay(){Days=1; SetDays(1);}
@@ -181,35 +191,23 @@ void MainWindow::SetDays(int DaysCount){
           query.first();
       }
 
-      //Добавим строки часов
-      //Узнаём рабочее время
-      QSqlQuery q2;
-      q2.exec("select value from settings where name='work_start_time'"); q2.first();
-      int work_start_time=q2.value(0).toInt();
-      q2.exec("select value from settings where name='work_end_time'"); q2.first();
-      int work_end_time=q2.value(0).toInt();
-      int hr;
 
-      for (hr=work_start_time; hr<=work_end_time; hr++) {
-          //Добавляем строчку часа
-          ui->ttable->insertRow(ui->ttable->rowCount());
-      }
 
-      //Ставим обеденное время
+   /*   //Ставим обеденное время
       int dinner_start_time=0;
       int dinner_end_time=0;
       if (db.isOpen()){
-          QSqlQuery query;
-          query.exec("select value from settings where name='dinner_start_time'");
-          if (query.numRowsAffected()>0){
-              query.next();
-              dinner_start_time=query.value(0).toInt();
+          QSqlQuery queryD;
+          queryD.exec("select value from settings where name='dinner_start_time'");
+          if (queryD.numRowsAffected()>0){
+              queryD.next();
+              dinner_start_time=queryD.value(0).toInt();
           }
 
-          query.exec("select value from settings where name='dinner_end_time'");
-          if (query.numRowsAffected()>0){
-              query.next();
-              dinner_end_time=query.value(0).toInt();
+          queryD.exec("select value from settings where name='dinner_end_time'");
+          if (queryD.numRowsAffected()>0){
+              queryD.next();
+              dinner_end_time=queryD.value(0).toInt();
           }
           if (dinner_start_time && dinner_end_time && dinner_start_time<dinner_end_time ){
               for (int i=dinner_start_time; i<dinner_end_time; i++){
@@ -224,7 +222,9 @@ void MainWindow::SetDays(int DaysCount){
               }
           }
       }
+*/
 
+          /*
       //Добавим заголовки занятых часов.
        int jj=0;
       for (int k=0;k<DaysCount;k++){
@@ -262,12 +262,14 @@ void MainWindow::SetDays(int DaysCount){
 
 // =======================================================================================================================================================
                   //Проверяем, есть ли пустая строка после строки часа
-                  if ( ui->ttable->item(row+1,0+(ui->ttable->columnCount()/DaysCount)*k) &&
-                       ui->ttable->item(row+1,0+(ui->ttable->columnCount()/DaysCount)*k)->statusTip()=="ac" &&
-                       ui->ttable->item(row+1,0+(ui->ttable->columnCount()/DaysCount)*k)->text().length()==0){
+                  if ( ui->ttable->item(row+1,0+(ui->ttable->columnCount()/DaysCount)*k)
+                       && ui->ttable->item(row+1,0+(ui->ttable->columnCount()/DaysCount)*k)->statusTip()=="eac")
+                  {
 
                      ui->ttable->item(row+1,0+(ui->ttable->columnCount()/DaysCount)*k)->setText(subq.value(1).toString()+" "+subq2.value(1).toString()+" "+subq.value(3).toString()+" "+subq.value(2).toString());
                      ui->ttable->item(row+1,0+(ui->ttable->columnCount()/DaysCount)*k)->setTextColor(query.value(2).toString());
+                     ui->ttable->item(row+1,0+(ui->ttable->columnCount()/DaysCount)*k)->setStatusTip("ac");
+
 
                   } else {
                       //Добавим строчки занятых часов
@@ -278,15 +280,13 @@ void MainWindow::SetDays(int DaysCount){
                           ui->ttable->setSpan(row+1, 0+(ui->ttable->columnCount()/DaysCount)*ds,1,placesCount);
                           QTableWidgetItem * nitm = new QTableWidgetItem ("");
                           nitm->setBackgroundColor("#ffffff");
-                          nitm->setStatusTip("ac");
+                          nitm->setStatusTip("eac");
                           ui->ttable->setItem(row+1, 0+(ui->ttable->columnCount()/DaysCount)*ds, nitm);
                           };
                   ui->ttable->item(row+1,0+(ui->ttable->columnCount()/DaysCount)*k)->setText(subq.value(1).toString()+" "+subq2.value(1).toString()+" "+subq.value(3).toString()+" "+subq.value(2).toString());
                   ui->ttable->item(row+1,0+(ui->ttable->columnCount()/DaysCount)*k)->setTextColor(query.value(2).toString());
 
                   };
-//================================================================================================================================================= */
-
 
                   //    SPANCOLS3 ("122",row,row+1);
               } while (q.next());
@@ -299,7 +299,7 @@ void MainWindow::SetDays(int DaysCount){
 
       //Добавим дополнительные строки занятых часов
 
-
+*/
 
   }
   ui->ttable->setHorizontalHeaderLabels(lblsV);
