@@ -137,7 +137,6 @@ void MainWindow::ClearTTable(){
     //Зачистка
         for (int i=0;i=ui->ttable->columnCount();i++) ui->ttable->removeColumn(0);
         for (int i=0;i=ui->ttable->rowCount();i++) ui->ttable->removeRow(0);
-        hv->reset();
 }
 
 void MainWindow::onOneDay(){Days=1; SetDays(1);}

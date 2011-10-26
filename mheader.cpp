@@ -23,7 +23,7 @@
 
 HMultiHeader::HMultiHeader(QWidget *parent, Qt::Orientation orientation1) : QHeaderView(orientation1 ,parent) {
  lockPaint=false;
- setHighlightSections (true);    
+ setHighlightSections (true);
  setClickable(true);
  spans=0;
  level=1;
@@ -39,7 +39,7 @@ int HMultiHeader::paintSubSections(QPainter *painter,QStyleOptionHeader &opt,int
  if (!root) return 0;
  int draws=0;
  QRect saved_rect=opt.rect;
- 
+
  if (orientation==Qt::Horizontal){
     opt.rect.setY(saved_rect.y()+saved_rect.height());
  }else{
@@ -52,12 +52,12 @@ int HMultiHeader::paintSubSections(QPainter *painter,QStyleOptionHeader &opt,int
      int x=baseX;
      int y=baseY;
      int w=0;
-     
+
      for (int i=logicalIndex-1; i>=root->start; i--) {
       x-=sectionSize(i);
       y-=sectionSize(i);
      }
-     
+
      for (int i=root->start; i<=root->stop;i++) {
       w+=sectionSize(i);
      }
@@ -77,25 +77,25 @@ int HMultiHeader::paintSubSections(QPainter *painter,QStyleOptionHeader &opt,int
     }
     root=root->next;
  }
- 
+
  return draws; //reurns how much sub headers were drawn
- 
+
 }
 
 void HMultiHeader::paintSection(QPainter *painter, const QRect &rect, int logicalIndex) const {
  if (!rect.isValid()) return;
- 
+
  QRect newrect=rect;
- 
+
  if (spans) {
   colspan *root=setRect(rect,newrect); //recalculate section rect
   if (root) {
    int baseHeight=rect.height()/(level+1); //adjust height for single row
    int baseWidth=rect.width()/(level+1); //adjust width for single column
-     
+
    QStyleOptionHeader opt;
    initStyleOption(&opt);
-  
+
    opt.rect=newrect;
    opt.section=logicalIndex;
    opt.position = QStyleOptionHeader::OnlyOneSection;
@@ -110,7 +110,7 @@ void HMultiHeader::paintSection(QPainter *painter, const QRect &rect, int logica
 //       opt.rect.setWidth(style()->sizeFromContents(QStyle::CT_HeaderSection, &opt, QSize(), this).rwidth());
    }
    style()->drawControl(QStyle::CE_Header, &opt, painter, this); //draw a top level span first
-   
+
    int adrawed=paintSubSections(painter,opt,logicalIndex,root->sub,rect.x(),rect.y()); //draw sub spans
 
    newrect=rect;
@@ -126,7 +126,7 @@ void HMultiHeader::paintSection(QPainter *painter, const QRect &rect, int logica
    }
   }
  }
- 
+
  QHeaderView::paintSection(painter,newrect,logicalIndex);
 
 }
@@ -149,9 +149,9 @@ void HMultiHeader::paintEvent ( QPaintEvent * event ) {
   QHeaderView::paintEvent(event);
   return;
  }
- 
+
  while(lockPaint); //mutex emulation - ugly way to avoid recursion
- 
+
  QRect newrect;
  setRect(event->rect(),newrect);
  if (event->rect()!=newrect) {
@@ -177,7 +177,7 @@ colspan * HMultiHeader::setRect(const QRect &rect,QRect &newrect) const {
      start=visualIndexAt(newrect.top());
      end=visualIndexAt(newrect.bottom());
  }
- 
+
  int w=newrect.width();
  int h=newrect.height();
  int x=newrect.x();
@@ -194,7 +194,7 @@ colspan * HMultiHeader::setRect(const QRect &rect,QRect &newrect) const {
      h+=sectionSize(i);
   }
  }
- 
+
  if (start!=end) si=getTopSpan(end);
  if (si) {
    for (int i=end+1; i<=si->stop; i++) {
@@ -213,7 +213,7 @@ colspan * HMultiHeader::setRect(const QRect &rect,QRect &newrect) const {
  }
  //newrect.setHeight(100);
 
- return si; 
+ return si;
 }
 
 int HMultiHeader::findMinSize(colspan *root,int minimum,int li,bool atop) const {
@@ -223,21 +223,21 @@ int HMultiHeader::findMinSize(colspan *root,int minimum,int li,bool atop) const 
   minimum=findMinSize(root->next,minimum,li);
  }
 
- if (li>=root->start && li<=root->stop) {  
-  minimum=findMinSize(root->sub,minimum,li);  
+ if (li>=root->start && li<=root->stop) {
+  minimum=findMinSize(root->sub,minimum,li);
   int w=0;
   for (int i=root->start;i<=root->stop; i++) if (!isSectionHidden(i)) w++;
   if (w) w=root->sizeHint/w;
   if (w>minimum) minimum=w;
  }
- 
+
  return minimum;
- 
+
 }
 
 QSize HMultiHeader::sectionSizeFromContents ( int logicalIndex ) const {
- 
- QSize size=QHeaderView::sectionSizeFromContents(logicalIndex); 
+
+ QSize size=QHeaderView::sectionSizeFromContents(logicalIndex);
  //size.rwidth()=findMinSize(getTopSpan(logicalIndex),size.width(),logicalIndex,true);
  int s=0;
  for (int i=1; i<=level;i++){
@@ -267,22 +267,22 @@ bool HMultiHeader::spanCols(const QString &text,int start,int stop,colspan *&roo
    spanSizeHint(root);
    return true;
   }
-  
+
   if (
-      (start>=root->start && start<=root->stop && stop>root->stop) || 
+      (start>=root->start && start<=root->stop && stop>root->stop) ||
       (start<root->start && stop>=root->start && stop<=root->stop)
      )  return false;//overlaps
-  
+
   if (start>root->stop || stop<root->start) {//next span
     return spanCols(text,start,stop,root->next,maxlevel);
-  }     
-  
+  }
+
   if (start>=root->start && stop<=root->stop) {//sub span
     maxlevel++;
     return spanCols(text,start,stop,root->sub,maxlevel);
-  } 
+  }
  }
- 
+
 //set span data if root==NULL
  colspan *tmp=new colspan(text,start,stop);
  spanSizeHint(tmp);
@@ -291,13 +291,13 @@ bool HMultiHeader::spanCols(const QString &text,int start,int stop,colspan *&roo
  }
  if (tmp->sizeHint > level_sizes.at(maxlevel)) level_sizes[maxlevel]=tmp->sizeHint;
  root=tmp;
- 
+
  return true;
- 
+
 }
 
 bool HMultiHeader::spanCols(const QString &text,int start,int stop) {
- 
+
  if (start<0 || start>=stop) return false;
  if (stop>=count()) return false;
 
@@ -305,7 +305,6 @@ bool HMultiHeader::spanCols(const QString &text,int start,int stop) {
  bool res=spanCols(text,start,stop,spans,maxlevel);
  if (maxlevel>level) {
      level=maxlevel;
-//     QMessageBox::information(0, "Kanji",QString::number(maxlevel), 0,0,0);
  }
  return res;
 }
@@ -319,8 +318,8 @@ void HMultiHeader::freeSpans(colspan *&root) {
 }
 
 colspan *HMultiHeader::getTopSpan(int idx) const {
- colspan *root=spans;  
- while (root) { 
+ colspan *root=spans;
+ while (root) {
    if (root->start<=idx && root->stop>=idx) break; //found span for idx
    root=root->next;
  }
