@@ -42,12 +42,16 @@ MainWindow::MainWindow(QWidget *parent) :
     db.setDatabaseName("timetable");
     authorization a(&db,&dinner_color);
     a.exec();
-
+/*
     QTableWidget *tw = ui->ttable;
      h = new HMultiHeader(tw, Qt::Horizontal);
      tw->setHorizontalHeader(h);
      hv = new HMultiHeader (tw,Qt::Vertical);
      tw->setVerticalHeader(hv);
+     */
+    ui->ttable->horizontalHeader()->hide();
+    ui->ttable->verticalHeader()->hide();
+
     onOneDay();
 }
 
@@ -147,8 +151,13 @@ void MainWindow::onWeek(){Days=7; SetDays(7);}
 //Главная функция, которая рисует дни
 void MainWindow::SetDays(int DaysCount){
     ClearTTable(); //Очищаем таблицу
-    QStringList lblsV; // Массивы заголовков
-    QStringList lblsH; // строк и столбцов
+
+    ui->ttable->insertRow(0);      // Две строчки
+    ui->ttable->insertRow(0);      // и столбец для
+    ui->ttable->insertColumn(0);   // имитации заголовков
+
+ //   QStringList lblsV; // Массивы заголовков
+//    QStringList lblsH; // строк и столбцов
     int placesCount;  //Число площадок
     int beginRow, addedRows =0; //Начальная строка объединения и число дополнительно вставленных строчек
 
@@ -164,18 +173,22 @@ void MainWindow::SetDays(int DaysCount){
       query.exec("select place_id, name, color from places order by name");
       query.first();
       for (int k=0;k<DaysCount;k++){
-          int j=0;
+          int j=1;
           // Забиваем список площадок в массив заголовков столько раз,
           // сколько требуется показать дней
           do {
               ui->ttable->insertColumn(j);
-              lblsV.append(QString(query.value(1).toString()));
+              QTableWidgetItem * nitm = new QTableWidgetItem (query.value(1).toString());
+              nitm->setBackgroundColor("silver");
+              nitm->setStatusTip("ac");
+              ui->ttable->setItem(1,j, nitm);
+
               j++;
           }
           while (query.next());
           query.first();
       }
-      ui->ttable->setHorizontalHeaderLabels(lblsV);
+   //   ui->ttable->setHorizontalHeaderLabels(lblsV);
 
       //Узнаём рабочее время
       QSqlQuery q2;
@@ -197,12 +210,19 @@ void MainWindow::SetDays(int DaysCount){
           ui->ttable->insertRow(ui->ttable->rowCount());
           beginRow=ui->ttable->rowCount()-1;
           addedRows=0;
-          lblsH.append(QString("%1:00").arg(hr));
+
+          //Добавляем имитацию заголовка
+          QTableWidgetItem * nitm = new QTableWidgetItem (QString("%1:00").arg(hr));
+          nitm->setBackgroundColor("silver");
+          nitm->setStatusTip("ac");
+          ui->ttable->setItem(beginRow, 0, nitm);
+
+       //   lblsH.append(QString("%1:00").arg(hr));
 
           //Смотрим, не обеденное ли сейчас время?
          if (hr>=dinner_start_time && hr<dinner_end_time && dinner_start_time<dinner_end_time ){
               //Обеденное - закрашиваем строчку цветом обеда
-                            for (int j=0; j<ui->ttable->columnCount(); j++){
+                            for (int j=1; j<ui->ttable->columnCount(); j++){
                             QTableWidgetItem *newItem1 = new QTableWidgetItem("");
                             newItem1->setBackgroundColor(dinner_color);
                             newItem1->setStatusTip("dt");
@@ -214,18 +234,18 @@ void MainWindow::SetDays(int DaysCount){
               for (int dd=0; dd<DaysCount; dd++){
               //Добавляем в строчку часа закрашенные ячейки
               //Получаем список площадок, на которых работы начинаются в этот час в i-й день.
-                  query.exec("select place_id, client_id, service_id, date, TIME(date), record_id, hours from ttable where DATE(date)='"+ day.addDays(dd).toString("yyyy-MM-dd") +"' and TIME(date)='"+QTime::fromString("00:00:00").addSecs(3600*hr).toString("hh:mm:ss")+"'");
+                  query.exec("select place_id, client_id, service_id, date, TIME(date), record_id, hours from ttable where DATE(date)='"+ day.addDays(dd).toString("yyyy-MM-dd") +"' and TIME(date)<='"+QTime::fromString("00:00:00").addSecs(3600*hr).toString("hh:mm:ss")+"'");
                   while (query.next()) {
                   if (QTime::fromString(query.value(4).toString()).toString("h:mm:ss")==QString("%1:00:00").arg(hr)){
                   //Получаем id площадки и вычисляем её положение среди столбцов
                   QSqlQuery plname;
                   plname.exec("select name, color from places where place_id="+query.value(0).toString()); plname.first();
-                  int col=0;
-                  for (int i=0+(ui->ttable->columnCount()/DaysCount)*dd; i<0+(ui->ttable->columnCount()/DaysCount)*dd+placesCount; i++)
-                      if(lblsV.value(i)==plname.value(0).toString()) col=i;
+                  int col=1;
+                  for (int i=1+(ui->ttable->columnCount()/DaysCount)*dd; i<1+(ui->ttable->columnCount()/DaysCount)*dd+placesCount; i++)
+                      if(ui->ttable->item(1,i)->text()==plname.value(0).toString()) col=i;
                   //Создаём закрашенную ячейку
                   //Убираем заголовок ячейки из массива - он попадёт в объединённый заголовок
-                  lblsH.removeLast(); lblsH.append("");
+                  //lblsH.removeLast(); lblsH.append("");
                   subq.exec("select * from clients where client_id="+query.value(1).toString()+";"); subq.first();
                   subq2.exec("select * from services where service_id="+query.value(2).toString()+";"); subq2.first();
                   QString ttip = query.value(4).toString()+"\n"+subq.value(1).toString()+"\n"+subq2.value(1).toString()+"\n"+subq.value(3).toString()+"\n"+subq.value(2).toString();
@@ -237,27 +257,26 @@ void MainWindow::SetDays(int DaysCount){
                   ui->ttable->setItem(beginRow,col, newItem);
                   //Добавляем дополнительную строчку
                   ui->ttable->insertRow(ui->ttable->rowCount());
-                  lblsH.append("");
+                  //lblsH.append("");
                   addedRows++;
                   //Делаем объединение ячеек
                   for (int ds=0; ds<DaysCount; ds++)
-                  ui->ttable->setSpan(ui->ttable->rowCount()-1, 0+(ui->ttable->columnCount()/DaysCount)*ds,1,placesCount);
+                  ui->ttable->setSpan(ui->ttable->rowCount()-1, 1+(ui->ttable->columnCount()/DaysCount)*ds,1,placesCount);
                   QTableWidgetItem * nitm = new QTableWidgetItem (subq.value(1).toString()+" "+subq2.value(1).toString()+" "+subq.value(3).toString()+" "+subq.value(2).toString());
                   nitm->setBackgroundColor("#ffffff");
                   nitm->setStatusTip("ac");
-                  ui->ttable->setItem(ui->ttable->rowCount()-1, 0+(ui->ttable->columnCount()/DaysCount)*dd, nitm);
+                  ui->ttable->setItem(ui->ttable->rowCount()-1, 1+(ui->ttable->columnCount()/DaysCount)*dd, nitm);
                  }else if(
                            (QTime::fromString(QString("%1:00:00").arg(hr))>QTime::fromString(query.value(4).toString()))
-                           &&(QTime::fromString(QString("%1:00:00").arg(hr))<QTime::fromString(query.value(4).toString()).addSecs(3600*query.value(6).toInt()))
+                           &&(QTime::fromString(QString("%1:00:00").arg(hr))<=QTime::fromString(query.value(4).toString()).addSecs(3600*query.value(6).toInt()))
                                                                                                ) {
                       //Просто заливаем ячейку
                       //Получаем id площадки и вычисляем её положение среди столбцов
                       QSqlQuery plname;
                       plname.exec("select name, color from places where place_id="+query.value(0).toString()); plname.first();
-                      int col=0;
-                      for (int i=0+(ui->ttable->columnCount()/DaysCount)*dd; i<0+(ui->ttable->columnCount()/DaysCount)*dd+placesCount; i++)
-                          if(lblsV.value(i)==plname.value(0).toString())
-                              col=i;
+                      int col=1;
+                      for (int i=1+(ui->ttable->columnCount()/DaysCount)*dd; i<1+(ui->ttable->columnCount()/DaysCount)*dd+placesCount; i++)
+                          if(ui->ttable->item(1,i)->text()==plname.value(0).toString()) col=i;
                       subq.exec("select * from clients where client_id="+query.value(1).toString()+";"); subq.first();
                       subq2.exec("select * from services where service_id="+query.value(2).toString()+";"); subq2.first();
                       QString ttip = query.value(4).toString()+"\n"+subq.value(1).toString()+"\n"+subq2.value(1).toString()+"\n"+subq.value(3).toString()+"\n"+subq.value(2).toString();
@@ -273,9 +292,11 @@ void MainWindow::SetDays(int DaysCount){
           };
           };
           //Объединяем горизонтальные заголовки в часы
-         if (addedRows>0) SPANCOLS3 (QString("%1:00").arg(hr),beginRow,beginRow+addedRows);
+         //if (addedRows>0) SPANCOLS3 (QString("%1:00").arg(hr),beginRow,beginRow+addedRows);
+         if (addedRows>0)
+             ui->ttable->setSpan(beginRow, 0,addedRows+1,1);
       };
-      ui->ttable->setVerticalHeaderLabels(lblsH);
+ //     ui->ttable->setVerticalHeaderLabels(lblsH);
 
       //  [===========]\
       //  |^^^водка^^^||""\\_,_
@@ -286,7 +307,13 @@ void MainWindow::SetDays(int DaysCount){
 
       for (int k=0;k<DaysCount;k++){
           QString cday=day.addDays(k).toString("dd.MM.yyyy dddd");
-          SPANCOLS2(cday, 0+(ui->ttable->columnCount()/DaysCount)*k,(ui->ttable->columnCount()/DaysCount)-1+(placesCount*k));
+
+          QTableWidgetItem * nitm = new QTableWidgetItem (cday);
+          nitm->setBackgroundColor("silver");
+          nitm->setStatusTip("ac");
+          ui->ttable->setItem(0, 1+(ui->ttable->columnCount()/DaysCount)*k, nitm);
+          ui->ttable->setSpan(0, 1+(ui->ttable->columnCount()/DaysCount)*k,1,placesCount);
+//          SPANCOLS2(cday, 0+(ui->ttable->columnCount()/DaysCount)*k,(ui->ttable->columnCount()/DaysCount)-1+(placesCount*k));
       }
     ui->ttable->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 };
@@ -325,7 +352,7 @@ void MainWindow::on_ttable_cellDoubleClicked(int row, int column)
     QSqlQuery q;
     //Узнаём номер площадки
     if (db.isOpen()){
-        q.exec("select place_id from places where name='"+ui->ttable->horizontalHeaderItem(column)->text()+"';");
+        q.exec("select place_id from places where name='"+ui->ttable->item(1,column)->text()+"';");
         q.first();
     }
     //Узнаём дату и время

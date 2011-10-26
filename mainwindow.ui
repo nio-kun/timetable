@@ -17,11 +17,17 @@
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
      <widget class="QTableWidget" name="ttable">
+      <attribute name="horizontalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
       <attribute name="horizontalHeaderDefaultSectionSize">
        <number>20</number>
       </attribute>
       <attribute name="horizontalHeaderMinimumSectionSize">
        <number>20</number>
+      </attribute>
+      <attribute name="verticalHeaderVisible">
+       <bool>false</bool>
       </attribute>
       <attribute name="verticalHeaderDefaultSectionSize">
        <number>20</number>
@@ -39,7 +45,7 @@
      <x>0</x>
      <y>0</y>
      <width>766</width>
-     <height>22</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
