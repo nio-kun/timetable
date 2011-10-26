@@ -5,13 +5,13 @@
 void MainWindow::MakeToolbars()
 {
     prevAct = new QAction(tr("Previous day"), this);
-    prevAct->setIcon(QIcon::fromTheme("go-previous", QIcon(qApp->applicationDirPath()+"/../share/mangaed/go-previous.png")));
+    prevAct->setIcon(QIcon::fromTheme("go-previous", QIcon(qApp->applicationDirPath()+"/../share/timetable/go-previous.png")));
     prevAct->setShortcut(Qt::CTRL+Qt::Key_Left);
     connect(prevAct, SIGNAL(triggered()), this, SLOT(onPrev()));
     ui->mainToolBar->addAction(prevAct);
 
     nextAct = new QAction(tr("Next day"), this);
-    nextAct->setIcon(QIcon::fromTheme("go-next", QIcon(qApp->applicationDirPath()+"/../share/mangaed/go-next.png")));
+    nextAct->setIcon(QIcon::fromTheme("go-next", QIcon(qApp->applicationDirPath()+"/../share/timetable/go-next.png")));
     nextAct->setShortcut(Qt::CTRL+Qt::Key_Right);
     connect(nextAct, SIGNAL(triggered()), this, SLOT(onNext()));
     ui->mainToolBar->addAction(nextAct);
