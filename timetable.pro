@@ -18,8 +18,7 @@ SOURCES += main.cpp\
     order_details.cpp \
     places.cpp \
     services.cpp \
-    users.cpp \
-    mheader.cpp
+    users.cpp
 
 HEADERS  += mainwindow.h \
     authorization.h \
@@ -28,7 +27,6 @@ HEADERS  += mainwindow.h \
     places.h \
     services.h \
     users.h \
-    mheader.h \
     toolbars.h
 
 FORMS    += mainwindow.ui \

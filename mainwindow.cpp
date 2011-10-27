@@ -7,24 +7,8 @@
 #include "order_details.h"
 #include "ui_mainwindow.h"
 #include "authorization.h"
-#include "mheader.h"
 #include "toolbars.h"
 #include <QBrush>
-
-
-#define SPANCOLS(txt,start,stop) \
- if (!h->spanCols(QString("%1 %2-%3").arg(txt).arg(start).arg(stop),start,stop))\
-   qDebug()<<QString("Failure for %1,%2").arg(start).arg(stop);
-
-#define SPANCOLS2(txt,start,stop) \
- if (!h->spanCols(QString(txt),start,stop))\
-   qDebug()<<QString("Failure for %1,%2").arg(start).arg(stop);
-
-
-#define SPANCOLS3(txt,start,stop) \
- if (!hv->spanCols(QString(txt),start,stop))\
-   qDebug()<<QString("Failure for %1,%2").arg(start).arg(stop);
-
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -42,13 +26,8 @@ MainWindow::MainWindow(QWidget *parent) :
     db.setDatabaseName("timetable");
     authorization a(&db,&dinner_color);
     a.exec();
-/*
-    QTableWidget *tw = ui->ttable;
-     h = new HMultiHeader(tw, Qt::Horizontal);
-     tw->setHorizontalHeader(h);
-     hv = new HMultiHeader (tw,Qt::Vertical);
-     tw->setVerticalHeader(hv);
-     */
+
+    ui->ttable->setStyleSheet("QTableView { gridline-color: black; }" );
     ui->ttable->horizontalHeader()->hide();
     ui->ttable->verticalHeader()->hide();
 
@@ -330,18 +309,36 @@ void MainWindow::on_ttable_cellDoubleClicked(int row, int column)
         }else if(ui->ttable->item(row, column)->statusTip()=="ac"){
             ; //В дополнительную строчку работы вставлять нельзя
         }else {
+
+
         if(QMessageBox::question(0,tr("Confirm"),tr("Are you really want to insert another work in this cell?"),3,4,0)==3){
+            //Узнаём время
+            QTime tme=QTime::fromString(ui->ttable->item(row,0)->text(),"h:mm");
+
             //Узнаём, на сколько часов нужно сократить работу
             QSqlQuery q;
             q.exec("select hours, date from ttable where record_id="+ui->ttable->item(row,column)->statusTip()); q.first();
             int hours=q.value(0).toInt(); QDateTime dat = q.value(1).toDateTime();
             int begin=dat.toString("HH").toInt();
-            int delta=hours+((begin-8)-row);
+            int tm= tme.toString("HH").toInt();
+
+            //Здесь ещё нужно учесть обед
+            QSqlQuery queryD;
+            queryD.exec("select value from settings where name='dinner_start_time'"); queryD.first();
+            int dinner_start_time=queryD.value(0).toInt();
+            queryD.exec("select value from settings where name='dinner_end_time'"); queryD.first();
+            int dinner_end_time=queryD.value(0).toInt();
+            int dt=0;
+            if (begin<dinner_start_time && (begin+hours)>dinner_end_time) dt=1;
+
+
+            int delta=(hours+begin)-tm+dt;
             QVariant newHours=hours-delta;
             q.exec("update ttable set hours="+newHours.toString()+" where record_id="+ui->ttable->item(row,column)->statusTip());
-            q.exec("select place_id from places where name='"+ui->ttable->horizontalHeaderItem(column)->text()+"';");
+            q.exec("select place_id from places where name='"+ui->ttable->item(1,column)->text()+"';");
             q.first();
-            QDateTime data = QDateTime::fromString(day.addDays(column/(ui->ttable->columnCount() / Days)).toString("dd.MM.yyyy")+" "+QTime(8,0,0,0).addSecs(row*3600).toString("hh:mm:ss"), "dd.MM.yyyy hh:mm:ss");
+            //Узнаём дату и время
+            QDateTime data = QDateTime::fromString(day.addDays((column+1)/(ui->ttable->columnCount() / Days)).toString("dd.MM.yyyy")+" "+tme.toString("hh:mm:ss"), "dd.MM.yyyy hh:mm:ss");
             //Вызываем форму назначения
             order_details s(&db, q.value(0).toInt(), data);
             s.exec();
@@ -356,11 +353,11 @@ void MainWindow::on_ttable_cellDoubleClicked(int row, int column)
         q.first();
     }
     //Узнаём дату и время
-    QDateTime data = QDateTime::fromString(day.addDays(column/(ui->ttable->columnCount() / Days)).toString("dd.MM.yyyy")+" "+QTime(8,0,0,0).addSecs(row*3600).toString("hh:mm:ss"), "dd.MM.yyyy hh:mm:ss");
-
-    //Вызываем форму назначения
-    order_details s(&db, q.value(0).toInt(), data);
-    s.exec();
+    QTime tme=QTime::fromString(ui->ttable->item(row,0)->text(),"h:mm");
+    QDateTime data = QDateTime::fromString(day.addDays((column+1)/(ui->ttable->columnCount() / Days)).toString("dd.MM.yyyy")+" "+tme.toString("hh:mm:ss"), "dd.MM.yyyy hh:mm:ss");
+   //Вызываем форму назначения
+   order_details s(&db, q.value(0).toInt(), data);
+   s.exec();
     SetDays(Days);
     }
 }
