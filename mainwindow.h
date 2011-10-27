@@ -4,8 +4,8 @@
 #include <QMainWindow>
 #include <QSqlDatabase>
 #include <QModelIndex>
-#include "mheader.h"
 #include <QColor>
+#include <QDate>
 
 namespace Ui {
     class MainWindow;
@@ -26,8 +26,6 @@ private slots:
     void on_action_4_triggered();
     void on_action_5_triggered();
     void on_action_6_triggered();
-    void on_ttable_doubleClicked(QModelIndex index);
-
 
 //private Q_SLOTS:
    void MakeToolbars();
@@ -44,8 +42,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QSqlDatabase db;
-    HMultiHeader *h;
-    HMultiHeader *hv;
     QDate day;
     int Days;
     QAction *prevAct;

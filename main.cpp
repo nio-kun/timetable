@@ -1,5 +1,8 @@
 #include <QtGui/QApplication>
+#include <QDate>
 #include "mainwindow.h"
+#include <QTranslator>
+#include <QLocale>
 
 int main(int argc, char *argv[])
 {

@@ -10,7 +10,6 @@
 #include "toolbars.h"
 #include <QBrush>
 
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -99,12 +98,6 @@ void MainWindow::on_action_6_triggered()
     s->show();
 }
 
-void MainWindow::on_ttable_doubleClicked(QModelIndex index)
-{
-    //Двойной клик - вызываем форму назначения.
-
-}
-
 void MainWindow::onPrev()
 {
 day=day.addDays(-1);
@@ -135,8 +128,6 @@ void MainWindow::SetDays(int DaysCount){
     ui->ttable->insertRow(0);      // и столбец для
     ui->ttable->insertColumn(0);   // имитации заголовков
 
- //   QStringList lblsV; // Массивы заголовков
-//    QStringList lblsH; // строк и столбцов
     int placesCount;  //Число площадок
     int beginRow, addedRows =0; //Начальная строка объединения и число дополнительно вставленных строчек
 
@@ -158,7 +149,7 @@ void MainWindow::SetDays(int DaysCount){
           do {
               ui->ttable->insertColumn(j);
               QTableWidgetItem * nitm = new QTableWidgetItem (query.value(1).toString());
-              nitm->setBackgroundColor("silver");
+              nitm->setBackgroundColor("lightgray");
               nitm->setStatusTip("ac");
               ui->ttable->setItem(1,j, nitm);
 
@@ -167,7 +158,6 @@ void MainWindow::SetDays(int DaysCount){
           while (query.next());
           query.first();
       }
-   //   ui->ttable->setHorizontalHeaderLabels(lblsV);
 
       //Узнаём рабочее время
       QSqlQuery q2;
@@ -192,13 +182,11 @@ void MainWindow::SetDays(int DaysCount){
 
           //Добавляем имитацию заголовка
           QTableWidgetItem * nitm = new QTableWidgetItem (QString("%1:00").arg(hr));
-          nitm->setBackgroundColor("silver");
+          nitm->setBackgroundColor("lightgray");
           nitm->setStatusTip("ac");
           ui->ttable->setItem(beginRow, 0, nitm);
 
-       //   lblsH.append(QString("%1:00").arg(hr));
-
-          //Смотрим, не обеденное ли сейчас время?
+              //Смотрим, не обеденное ли сейчас время?
          if (hr>=dinner_start_time && hr<dinner_end_time && dinner_start_time<dinner_end_time ){
               //Обеденное - закрашиваем строчку цветом обеда
                             for (int j=1; j<ui->ttable->columnCount(); j++){
@@ -209,6 +197,10 @@ void MainWindow::SetDays(int DaysCount){
                             ui->ttable->setItem(ui->ttable->rowCount()-1,j, newItem1);
                     }
                 } else {
+
+             //Время не обеденное, но учитывать обед всё равно надо
+             //int dinnerlap=0;
+             //if (hr>=dinner_end_time) dinnerlap=dinner_end_time-dinner_start_time;
 
               for (int dd=0; dd<DaysCount; dd++){
               //Добавляем в строчку часа закрашенные ячейки
@@ -224,8 +216,7 @@ void MainWindow::SetDays(int DaysCount){
                       if(ui->ttable->item(1,i)->text()==plname.value(0).toString()) col=i;
                   //Создаём закрашенную ячейку
                   //Убираем заголовок ячейки из массива - он попадёт в объединённый заголовок
-                  //lblsH.removeLast(); lblsH.append("");
-                  subq.exec("select * from clients where client_id="+query.value(1).toString()+";"); subq.first();
+                           subq.exec("select * from clients where client_id="+query.value(1).toString()+";"); subq.first();
                   subq2.exec("select * from services where service_id="+query.value(2).toString()+";"); subq2.first();
                   QString ttip = query.value(4).toString()+"\n"+subq.value(1).toString()+"\n"+subq2.value(1).toString()+"\n"+subq.value(3).toString()+"\n"+subq.value(2).toString();
                   QColor colr = plname.value(1).toString();
@@ -234,9 +225,23 @@ void MainWindow::SetDays(int DaysCount){
                   newItem->setToolTip(ttip);
                   newItem->setStatusTip(query.value(5).toString());
                   ui->ttable->setItem(beginRow,col, newItem);
+                  bool arfilled=false;
+                  if (addedRows>0){
+                      for (int m=1; m<=addedRows; m++){
+                          if (!ui->ttable->item(beginRow+m, 1+(ui->ttable->columnCount()/DaysCount)*dd )){
+                              //Новую строчку добавлять не надо, пишем в найденной пустой
+                              QTableWidgetItem * nitm = new QTableWidgetItem (subq.value(1).toString()+" "+subq2.value(1).toString()+" "+subq.value(3).toString()+" "+subq.value(2).toString());
+                              nitm->setBackgroundColor("#ffffff");
+                              nitm->setStatusTip("ac");
+                              ui->ttable->setItem(beginRow+m, 1+(ui->ttable->columnCount()/DaysCount)*dd, nitm);
+                              arfilled=true;
+                              break;
+                          }
+                        }
+                      };
+                      if (!arfilled){
                   //Добавляем дополнительную строчку
                   ui->ttable->insertRow(ui->ttable->rowCount());
-                  //lblsH.append("");
                   addedRows++;
                   //Делаем объединение ячеек
                   for (int ds=0; ds<DaysCount; ds++)
@@ -245,9 +250,10 @@ void MainWindow::SetDays(int DaysCount){
                   nitm->setBackgroundColor("#ffffff");
                   nitm->setStatusTip("ac");
                   ui->ttable->setItem(ui->ttable->rowCount()-1, 1+(ui->ttable->columnCount()/DaysCount)*dd, nitm);
+                          };
                  }else if(
-                           (QTime::fromString(QString("%1:00:00").arg(hr))>QTime::fromString(query.value(4).toString()))
-                           &&(QTime::fromString(QString("%1:00:00").arg(hr))<=QTime::fromString(query.value(4).toString()).addSecs(3600*query.value(6).toInt()))
+                          (hr>QTime::fromString(query.value(4).toString()).toString("hh").toInt())
+                          &&(hr<=(QTime::fromString(query.value(4).toString()).toString("hh").toInt() + query.value(6).toInt()))
                                                                                                ) {
                       //Просто заливаем ячейку
                       //Получаем id площадки и вычисляем её положение среди столбцов
@@ -264,35 +270,25 @@ void MainWindow::SetDays(int DaysCount){
                       newItem->setBackgroundColor(colr);
                       newItem->setToolTip(ttip);
                       newItem->setStatusTip(query.value(5).toString());
-                      ui->ttable->setItem(ui->ttable->rowCount()-1,col, newItem);
+                      ui->ttable->setItem(ui->ttable->rowCount()-1-addedRows,col, newItem);
                   };
 
               };
           };
           };
           //Объединяем горизонтальные заголовки в часы
-         //if (addedRows>0) SPANCOLS3 (QString("%1:00").arg(hr),beginRow,beginRow+addedRows);
-         if (addedRows>0)
-             ui->ttable->setSpan(beginRow, 0,addedRows+1,1);
+          if (addedRows>0) ui->ttable->setSpan(beginRow, 0,addedRows+1,1);
       };
- //     ui->ttable->setVerticalHeaderLabels(lblsH);
-
-      //  [===========]\
-      //  |^^^водка^^^||""\\_,_
-      //  |___________||___|__|)     <-----Это грузовик с водкой
-      //   (@)(@)""""(@)(@)**(@)
 
  //А теперь объединяем площадки в дни
 
       for (int k=0;k<DaysCount;k++){
           QString cday=day.addDays(k).toString("dd.MM.yyyy dddd");
-
           QTableWidgetItem * nitm = new QTableWidgetItem (cday);
-          nitm->setBackgroundColor("silver");
+          nitm->setBackgroundColor("lightgray");
           nitm->setStatusTip("ac");
           ui->ttable->setItem(0, 1+(ui->ttable->columnCount()/DaysCount)*k, nitm);
           ui->ttable->setSpan(0, 1+(ui->ttable->columnCount()/DaysCount)*k,1,placesCount);
-//          SPANCOLS2(cday, 0+(ui->ttable->columnCount()/DaysCount)*k,(ui->ttable->columnCount()/DaysCount)-1+(placesCount*k));
       }
     ui->ttable->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 };
